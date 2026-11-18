@@ -1,0 +1,1496 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Mantis: France Survival - PvP & Full Reset 1.6</title><style>
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:#10251c;color:#f0ffec;font-family:system-ui,Arial}canvas{display:block}button,input{font:inherit}button{cursor:pointer;color:white;background:#285b3c;border:1px solid #a5df9c80;border-radius:10px;padding:9px 12px;touch-action:none}button:disabled{opacity:.5}#login{position:fixed;inset:0;z-index:20;background:linear-gradient(130deg,#07180fef,#173d2af2),radial-gradient(circle at 70% 20%,#6a9e50,#10261c);display:grid;place-items:center;padding:18px}#login .panel{width:min(440px,100%);padding:28px;border:1px solid #a2d89a70;border-radius:22px;background:#122b22;box-shadow:0 25px 80px #0008}h1{font-size:clamp(27px,5vw,42px);margin:0 0 7px}#login input{width:100%;padding:13px;margin:14px 0;background:#f4fff4;border:0;border-radius:10px;color:#17311e}#login button{width:100%;padding:13px;font-weight:700}#login p{line-height:1.5;color:#c8e4cc;font-size:14px}#hud{position:fixed;z-index:5;top:10px;left:10px;right:10px;pointer-events:none;display:flex;gap:10px;align-items:flex-start;justify-content:space-between}#brand,#info,#bars,#objective{background:#0c281fdc;border:1px solid #b1e1ad55;border-radius:12px;padding:9px 11px;backdrop-filter:blur(5px)}#brand{font-size:13px;max-width:260px}#brand strong{display:block;font-size:15px}#info{font-size:12px;max-width:230px}#bars{width:min(310px,36vw);min-width:170px}.stat{display:flex;align-items:center;gap:7px;font-size:11px;margin:2px 0 5px}.stat span{width:51px}.track{height:10px;flex:1;background:#15201a;border-radius:10px;overflow:hidden}.fill{height:100%;width:100%;transition:width .15s}#hpbar{background:#e95b68}#hungerbar{background:#f6bc58}#energybar{background:#65d4ff}#objective{position:fixed;z-index:5;top:105px;left:10px;max-width:285px;font-size:12px;pointer-events:none}#message{position:fixed;z-index:6;top:122px;left:50%;transform:translateX(-50%);background:#123c2ae8;padding:10px 16px;border:1px solid #b5f5ae80;border-radius:14px;text-align:center;font-weight:700;font-size:13px;max-width:70vw;pointer-events:none}#save{position:fixed;right:12px;top:100px;z-index:7;font-size:12px}#controls{position:fixed;z-index:8;bottom:14px;left:14px;display:grid;grid-template-columns:repeat(3,52px);gap:5px}#controls button{min-height:52px;font-size:21px;background:#133b2ccc}#actions{position:fixed;z-index:8;bottom:14px;right:14px;display:flex;flex-direction:column;gap:7px}#actions button{background:#133b2ce8;font-size:12px;min-width:98px}#hint{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);font-size:11px;text-shadow:0 2px 5px #000;pointer-events:none;white-space:nowrap}#fight{display:none;position:fixed;z-index:9;top:190px;right:12px;background:#301e20e9;padding:10px;border:1px solid #ffb5b5;border-radius:12px;font-size:13px;width:210px}#fight .track{margin-top:7px}#enemybar{background:#ff8b77}#loading{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:#0c2019;color:white} @media(max-width:740px){#hud{gap:4px}#brand{max-width:145px;font-size:10px}#brand strong{font-size:12px}#info{display:none}#bars{width:42vw;min-width:135px;padding:7px}#objective{top:94px;max-width:205px}#save{top:98px;right:8px;max-width:130px}#message{top:180px;font-size:11px}#hint{display:none}#fight{top:245px;width:160px}#controls{bottom:10px;left:8px;grid-template-columns:repeat(3,44px)}#controls button{min-height:44px}#actions{right:8px;bottom:10px}}
+#mentorPanel{position:fixed;z-index:12;left:12px;bottom:195px;width:min(330px,calc(100vw - 24px));background:#142b28ed;border:1px solid #b3dbd0;border-radius:16px;padding:13px;box-shadow:0 10px 28px #0008}#mentorPanel h3{margin:0 0 6px;color:#c6f5da}#mentorPanel p{margin:5px 0 12px;font-size:13px;line-height:1.45}#mentorPanel .buttons{display:flex;gap:7px;flex-wrap:wrap}#mentorPanel button{font-size:12px}#petInfo{position:fixed;z-index:6;right:12px;top:145px;background:#112d23dd;border-radius:10px;padding:7px;font-size:12px;max-width:190px}@media(max-width:740px){#mentorPanel{bottom:160px;width:min(275px,calc(100vw - 24px))}#petInfo{top:150px;right:8px;max-width:130px;font-size:10px}}#petPanel{position:fixed;z-index:22;inset:0;background:#071b15e8;display:none;place-items:center;padding:12px}#petPanel .petBox{width:min(540px,96vw);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#193e32,#10251d);border:2px solid #c7ae62;border-radius:22px;padding:20px;text-align:center;box-shadow:0 25px 80px #000b}#petPanel h2{margin:0 0 8px}#petGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;text-align:left;margin:14px 0}#petGrid .petCard{border:1px solid #8bad82;border-radius:12px;padding:10px;background:#092019}#petGrid .petCard button{width:100%;margin-top:7px}#chest{font-size:86px;line-height:1.4;display:inline-block;transform-origin:center bottom}#chest.shake{animation:chestshake .12s ease-in-out infinite alternate}#chest.open{animation:chestopen .7s ease-out forwards}@keyframes chestshake{from{transform:translateX(-8px) rotate(-9deg)}to{transform:translateX(8px) rotate(9deg)}}@keyframes chestopen{0%{transform:scale(1) rotate(0)}35%{transform:scale(1.35) rotate(-14deg)}65%{transform:scale(1.4) rotate(10deg)}100%{transform:scale(1.2) translateY(-8px)}}#petReveal{font-weight:800;font-size:22px;min-height:30px}#petPanel .muted{color:#b9d7bf;font-size:12px}#petPanel button{margin:3px}#petsOpen{position:fixed;right:12px;top:185px;z-index:8;font-size:12px}@media(max-width:740px){#petsOpen{top:195px;right:8px}} </style><style id="socialStyles">#chatDock{position:fixed;z-index:18;left:195px;bottom:12px;width:min(270px,42vw);background:#102d27ed;border:1px solid #76c6a7;border-radius:13px;padding:9px;box-shadow:0 8px 30px #0007;font:12px system-ui;color:white}#chatLog{height:96px;overflow-y:auto;overflow-wrap:anywhere;background:#071a16aa;padding:6px;border-radius:7px;margin:5px 0}#chatForm{display:flex;gap:4px}#chatInput{width:100%;min-width:0;background:#fff;color:#14251d;border:0;border-radius:6px;padding:7px;font-size:12px}#chatSend{padding:6px 9px;font-size:12px}#petStats{position:fixed;z-index:9;right:12px;top:245px;width:min(190px,30vw);max-height:34vh;overflow:auto;background:#0c241fe8;border:1px solid #4e987e;border-radius:10px;padding:8px;font:11px system-ui;color:white}#petStats .meter{height:5px;background:#304c43;border-radius:5px;overflow:hidden;margin:2px 0 5px}#petStats .meter i{display:block;height:100%;background:#83d98e}#nameTag{position:fixed;z-index:7;pointer-events:none;display:none;color:white;text-shadow:0 2px 5px black;font:bold 12px system-ui;text-align:center;transform:translate(-50%,-100%)}#chatDock h4{margin:0}#petStats b{color:#d8f4db}@media(max-width:700px){#chatDock{width:180px;bottom:255px;left:5px;padding:5px}#chatLog{height:55px}#petStats{right:5px;top:255px;max-height:25vh;width:130px}#onlinePanel{bottom:250px!important}} </style><style id="multiplayerStyles">#onlinePanel{position:fixed;right:12px;bottom:108px;z-index:15;background:#102c26ed;border:1px solid #7dc9aa;border-radius:12px;padding:10px;width:min(270px,45vw);font:12px system-ui}#onlinePanel button{font-size:12px;padding:6px;margin-top:5px}#onlineStatus{font-weight:700;color:#b5ffcc}#onlineSetup{position:fixed;inset:0;z-index:50;background:#07150feb;display:none;place-items:center;padding:15px}#onlineSetup>div{width:min(570px,95vw);background:#1c3930;padding:20px;border:1px solid #93c8a8;border-radius:18px;max-height:90vh;overflow:auto}#firebaseConfig{width:100%;height:170px;background:#091e19;color:white;font:12px monospace;border:1px solid #8dc4a3;border-radius:8px;padding:9px}#onlineSetup button{margin:5px}#onlineSetup p{font-size:13px;line-height:1.4}#onlineSetup a{color:#b7f6d2}@media(max-width:650px){#onlinePanel{right:5px;bottom:145px;width:160px;font-size:10px;padding:6px}}</style>
+<style id="multiplayerFixStyles">
+#actions{z-index:19}#rightRail{position:fixed;z-index:15;top:102px;right:12px;width:220px;bottom:250px;display:flex;flex-direction:column;gap:7px;overflow-y:auto;scrollbar-width:thin;padding:1px 3px 2px}
+#rightRail #save,#rightRail #petInfo,#rightRail #petsOpen,#rightRail #petStats,#rightRail #fight,#rightRail #onlinePanel{position:static!important;inset:auto!important;margin:0;max-width:none;width:100%;flex-shrink:0}
+#rightRail #petStats{max-height:none;overflow:visible}#rightRail #onlinePanel{font-size:11px}#rightRail #onlinePanel button{font-size:11px}
+#goSpawn{border-color:#e0cd8b!important;background:#455632!important;font-weight:700;min-height:42px;touch-action:manipulation}
+@media(max-width:740px){#chatDock{width:min(180px,calc(100vw - 165px))}#mentorShow{bottom:132px!important}#rightRail{top:142px;right:5px;width:145px}#rightRail #petStats{font-size:10px}#rightRail #save,#rightRail #petsOpen{font-size:11px;padding:7px 5px}#actions button{min-height:36px}}
+@media(max-height:550px){#rightRail{top:85px}#rightRail #petInfo{display:none}#objective{max-width:170px}#message{max-width:40vw}}
+</style>
+<!-- OPTIONAL REWARDED ADS — publisher setup
+  The game and joystick work without ads. No ad script loads with enabled:false.
+  An adult publisher must obtain their own approved Google Ad Manager inventory,
+  eligible ad demand and a correctly configured consent-management platform.
+  Add the CMP's exact generated tag here, BEFORE the game script. A fake consent
+  dialog or setting publisherReady:true by itself does not establish consent.
+  Supply the two real Ad Manager paths below; never use a Firebase key or ca-pub ID.
+  This integration requires a positive, loaded TCF decision for Google vendor 755
+  and the purposes used for non-personalized ads. No fallback to unconsented ads.
+  The parent/publisher must assess their audience and age treatment. CHILD is the
+  conservative initial setting; leave ads disabled until that assessment is done.
+-->
+<script id="mantisRewardedAdConfiguration">
+window.MANTIS_REWARDED_ADS = {
+  enabled: false,
+  publisherReady: false,
+  adUnits: {
+    coins: "", // e.g. /YOUR_NETWORK_CODE/mantis_reward_coins (50 coins)
+    molt: ""   // e.g. /YOUR_NETWORK_CODE/mantis_reward_molt (180 seconds)
+  },
+  ageTreatment: "CHILD", // CHILD, TEEN, or UNSPECIFIED; publisher must select accurately.
+  privacyPolicyUrl: ""   // Publish your site's privacy notice and paste its HTTPS URL.
+};
+</script>
+
+<style id="rewardStyles">
+#rewardButtons{position:fixed;z-index:18;top:110px;left:50%;transform:translateX(-50%);display:flex;gap:7px;align-items:center;pointer-events:auto;max-width:calc(100vw - 24px)}
+#rewardButtons[hidden]{display:none}
+#rewardButtons button{display:flex;align-items:center;gap:7px;min-height:44px;padding:7px 11px;border-radius:12px;border-color:#cae2a8;background:linear-gradient(145deg,#2c5738,#183629);font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 4px 14px #0003}
+#rewardButtons .adBadge{border:1px solid #b0c990;color:#def4bf;border-radius:5px;padding:2px 3px;font-size:9px;letter-spacing:.06em}
+#rewardButtons .rewardWords{display:flex;flex-direction:column;line-height:1.3;text-align:left}
+#rewardButtons .rewardWords small{font-weight:400;font-size:10px;color:#d1e6d5}
+#walletBalance{font-size:11px;color:#ffe398;font-variant-numeric:tabular-nums;white-space:nowrap;display:none}
+#rewardModal{position:fixed;inset:0;z-index:10000;background:#03120de8;display:grid;place-items:center;padding:max(18px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));touch-action:manipulation;overscroll-behavior:contain}
+#rewardModal[hidden]{display:none!important}
+#rewardDialog{background:linear-gradient(145deg,#1c4030,#10251e);border:1px solid #cce5a8;border-radius:23px;box-shadow:0 28px 90px #0008;padding:25px;width:min(420px,100%);max-height:88dvh;overflow:auto;color:#f5fff0;text-align:center}
+#rewardDialog .rewardIcon{display:grid;place-items:center;width:62px;height:62px;margin:0 auto 14px;background:#365b39;border:1px solid #92b975;border-radius:18px;font-size:30px}
+#rewardDialog h2{font-size:23px;margin:0 0 10px}
+#rewardDialog p{font-size:14px;line-height:1.6;color:#d4e7d6;margin:10px 0}
+#rewardDialog #rewardStatus{min-height:42px;font-weight:600;color:#fff}
+#rewardDialog .rewardDialogActions{display:flex;gap:9px;flex-direction:column;margin-top:18px}
+#rewardDialog button{min-height:46px;font-size:14px;touch-action:manipulation}
+#rewardDialog #rewardWatch{background:#c5e59a;color:#173421;font-weight:800;border-color:#dbf9af}
+#rewardDialog #rewardWatch[hidden]{display:none}
+#rewardDialog #rewardCancel{background:#193a2b}
+#rewardDialog .rewardFineprint{font-size:11px;color:#b4cbb6}
+#rewardDialog .rewardLinks{display:flex;justify-content:center;align-items:center;gap:15px;flex-wrap:wrap}
+#rewardDialog .rewardLinks button,#rewardDialog .rewardLinks a{background:transparent;border:0;color:#d1eab9;padding:8px 1px;font-size:12px;min-height:40px;text-decoration:underline}
+#adPrivacy{font-size:11px;padding:7px;min-height:38px;background:#173a2b}
+body.reward-modal-open #hint{visibility:hidden}
+@media(max-width:740px){#rewardButtons{gap:5px;top:109px}#rewardButtons button{min-height:42px;padding:6px 8px;font-size:11px}#rewardButtons .rewardWords small{font-size:9px}#rewardDialog{padding:21px}}
+@media(max-height:500px) and (orientation:landscape){#rewardButtons{top:8px;left:50%}#rewardDialog{max-height:94dvh;padding:16px}#rewardDialog .rewardIcon{display:none}#rewardDialog p{margin:6px 0}#rewardDialog .rewardDialogActions{margin-top:10px}}
+
+</style>
+<style id="joystickStyles">
+/* Safe-area controls. Insert after the game's other styles. */
+:root{--hud-end:110px;--rewards-end:170px;--tools-end:218px;--visible-height:100dvh}
+body{-webkit-text-size-adjust:100%;overscroll-behavior:none}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible,#joystickBase:focus-visible{outline:3px solid #f5dc81;outline-offset:3px}
+input,textarea,select,#chatInput{font-size:16px}
+[hidden]{display:none!important}
+#hud{top:max(8px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right))}
+#rewardButtons{position:fixed!important;z-index:18;top:var(--hud-end)!important;left:max(12px,env(safe-area-inset-left))!important;right:auto!important;width:min(360px,calc(100vw - 24px));display:grid;grid-template-columns:1fr 1fr;gap:6px;transform:none!important}
+#rewardButtons button{min-width:0;min-height:46px;white-space:normal;line-height:1.2;padding:8px;font-size:12px}
+#gameTools{position:fixed;top:var(--rewards-end);left:max(12px,env(safe-area-inset-left));display:flex;gap:6px;align-items:stretch;z-index:29}
+#gameTools button{position:static!important;inset:auto!important;font-size:12px;padding:8px 12px;min-height:42px;margin:0;background:#123c2aee;white-space:nowrap}
+#gameMenu{display:none}
+#controls{display:none;grid-template-columns:none;bottom:max(18px,calc(env(safe-area-inset-bottom) + 12px));left:max(12px,calc(env(safe-area-inset-left) + 8px));z-index:19;touch-action:none;user-select:none;-webkit-user-select:none}
+#joystickBase{position:relative;width:146px;height:146px;touch-action:none;border:1px solid #c3f5ba80;border-radius:50%;background:radial-gradient(circle,#184b3599 0%,#092c23c9 67%,#071d1de6 100%);box-shadow:0 6px 24px #0005,inset 0 0 0 8px #d0ffce08;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.joystick-ring{position:absolute;inset:18%;border:1px solid #b4dca82e;border-radius:50%;pointer-events:none}
+#joystickThumb{position:absolute;left:50%;top:50%;width:54px;height:54px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid #d4f8b8;box-shadow:0 3px 12px #0007,inset 0 1px 5px #ffffff55;background:linear-gradient(140deg,#86ba71,#2e7248);pointer-events:none;will-change:transform}
+#joystickBase.engaged{border-color:#e8ffc4;background:#124832dd;box-shadow:0 0 25px #b5ff9c22}
+#joystickHint{display:block;text-align:center;font-size:9px;font-weight:800;letter-spacing:1.2px;color:#def7da;text-shadow:0 1px 4px #000;margin-top:6px;pointer-events:none}
+#actions{bottom:max(14px,calc(env(safe-area-inset-bottom) + 8px));right:max(12px,calc(env(safe-area-inset-right) + 8px))}
+#actions button{min-height:44px}
+#rightRail{top:var(--tools-end);max-height:calc(var(--visible-height) - var(--tools-end) - 20px)}
+#rightRail #objective{position:static!important;inset:auto!important;max-width:none;pointer-events:auto;margin:0;width:100%;font-size:12px;flex-shrink:0}
+#railHeader{display:none;align-items:center;justify-content:space-between;gap:10px;font-size:14px;padding:3px 0 8px}
+#railHeader button,#chatClose{min-height:38px;font-size:12px;padding:6px 10px}
+#chatDock{display:none;z-index:27;bottom:max(12px,env(safe-area-inset-bottom));max-height:calc(var(--visible-height) - 24px);overflow:auto;width:min(320px,calc(100vw - 24px))}
+body.chat-open #chatDock{display:block}
+#chatDock h4{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#chatLog{height:100px;max-height:23vh;touch-action:pan-y}
+#chatInput{min-height:44px;touch-action:manipulation}
+#chatSend{min-height:44px;font-size:13px;touch-action:manipulation}
+#drawerBackdrop{display:none;position:fixed;inset:0;width:100%;height:100%;z-index:24;background:#00110b66;border:0;border-radius:0;padding:0;touch-action:none}
+#mentorPanel{top:var(--tools-end);bottom:auto;max-height:calc(var(--visible-height) - var(--tools-end) - 22px);overflow:auto;z-index:30;touch-action:pan-y}
+#mentorPanel button{min-height:44px}
+#login,#onlineSetup,#petPanel{padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
+#login{z-index:90}#petPanel{z-index:80}#onlineSetup{z-index:100}
+#login .panel,#onlineSetup>div,#petPanel .petBox{max-height:calc(var(--visible-height) - 32px);overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain}
+#hint{bottom:max(8px,env(safe-area-inset-bottom))}
+body:not(.is-playing) #controls,body:not(.is-playing) #actions,body:not(.is-playing) #gameTools,body:not(.is-playing) #rewardButtons,body:not(.is-playing) #chatDock,body:not(.is-playing) #rightRail,body:not(.is-playing) #drawerBackdrop{display:none!important}
+body.movement-paused #joystickBase{opacity:.5;pointer-events:none}
+body.touch-layout #controls{display:block}
+body.touch-layout #hint{display:none}
+body.touch-layout #brand{font-size:10px;max-width:46%;padding:7px 8px}
+body.touch-layout #brand strong{font-size:11px}
+body.touch-layout #stats{line-height:1.35;font-size:10px}
+body.touch-layout #info{display:none}
+body.touch-layout #bars{width:48%;min-width:0;padding:7px 8px;max-width:310px}
+body.touch-layout .stat{font-size:10px;gap:4px}
+body.touch-layout .stat span{width:42px}
+body.touch-layout #rewardButtons{left:max(8px,env(safe-area-inset-left))!important;right:max(8px,env(safe-area-inset-right))!important;width:auto!important}
+body.touch-layout #gameTools{left:max(8px,env(safe-area-inset-left));right:max(8px,env(safe-area-inset-right));justify-content:flex-start}
+body.touch-layout #gameTools button{min-height:40px;flex:1;font-size:12px}
+body.touch-layout #gameMenu{display:block}
+body.touch-layout #joystickBase{width:clamp(118px,35vw,146px);height:clamp(118px,35vw,146px)}
+body.touch-layout #joystickThumb{width:48px;height:48px}
+body.touch-layout #actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:clamp(152px,43vw,180px)}
+body.touch-layout #actions button{min-width:0;min-height:44px;font-size:11px;padding:6px 5px;line-height:1.2}
+body.touch-layout #attack{order:0;background:#615825ed;border-color:#e6da9e;font-weight:800}
+body.touch-layout #goSpawn{order:1;font-size:10px}
+body.touch-layout #climb{order:2}
+body.touch-layout #molt{order:3}
+body.touch-layout #eat{order:4}
+body.touch-layout #fly{order:5}
+body.touch-layout #flyUp{order:6}
+body.touch-layout #flyDown{order:7}
+body.touch-layout #rightRail{display:none;top:var(--tools-end)!important;bottom:max(8px,env(safe-area-inset-bottom))!important;right:max(8px,env(safe-area-inset-right));left:auto;width:min(330px,calc(100vw - 16px));max-height:calc(var(--visible-height) - var(--tools-end) - 12px);z-index:26;padding:12px;background:#0c2924fa;border:1px solid #80bea0;border-radius:16px;box-shadow:0 12px 30px #0008;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain}
+body.touch-layout.menu-open #rightRail{display:flex}
+body.touch-layout #railHeader{display:flex}
+body.touch-layout #rightRail #petStats{font-size:12px}
+body.touch-layout #rightRail #petInfo{display:block;font-size:12px}
+body.touch-layout #rightRail #save,body.touch-layout #rightRail #petsOpen{font-size:13px;min-height:44px;padding:9px}
+body.touch-layout #rightRail #onlinePanel{font-size:12px}
+body.touch-layout #rightRail #onlinePanel button{font-size:12px;min-height:42px}
+body.touch-layout #chatDock{top:var(--tools-end)!important;bottom:auto!important;left:max(8px,env(safe-area-inset-left))!important;right:max(8px,env(safe-area-inset-right))!important;width:auto!important;max-height:calc(var(--visible-height) - var(--tools-end) - 12px);padding:10px}
+body.touch-layout.chat-typing #chatDock{top:max(8px,env(safe-area-inset-top))!important;max-height:calc(var(--visible-height) - 20px)}
+body.touch-layout.menu-open #drawerBackdrop,body.touch-layout.chat-open #drawerBackdrop{display:block}
+body.touch-layout #message{top:calc(var(--tools-end) + 4px);font-size:11px;max-width:calc(100vw - 22px);padding:7px 10px;width:max-content}
+body.touch-layout #fight{position:fixed;top:var(--tools-end);right:max(8px,env(safe-area-inset-right));bottom:auto;left:auto;width:min(190px,47vw);z-index:10}
+body.touch-layout.in-arena:not(.touch-landscape) #message{top:calc(var(--tools-end) + 82px)}
+body.touch-layout #mentorPanel{top:var(--tools-end);left:50%;transform:translateX(-50%);width:min(360px,calc(100vw - 16px));max-height:calc(var(--visible-height) - var(--tools-end) - 12px);bottom:auto!important;padding:12px}
+body.touch-layout #petPanel .petBox{padding:14px}
+body.touch-landscape #hud{align-items:flex-start}
+body.touch-landscape #brand{width:154px;max-width:154px;padding:6px}
+body.touch-landscape #brand strong{font-size:10px}
+body.touch-landscape #stats{font-size:9px;line-height:1.15}
+body.touch-landscape #bars{width:180px;max-width:180px;padding:5px 7px}
+body.touch-landscape #rewardButtons{top:max(8px,env(safe-area-inset-top))!important;left:calc(max(8px,env(safe-area-inset-left)) + 164px)!important;right:calc(max(8px,env(safe-area-inset-right)) + 190px)!important}
+body.touch-landscape #rewardButtons button{min-height:46px;font-size:10px;padding:5px 4px}
+body.touch-landscape #gameTools{left:calc(max(8px,env(safe-area-inset-left)) + 164px);right:calc(max(8px,env(safe-area-inset-right)) + 190px);top:var(--rewards-end);gap:4px}
+body.touch-landscape #gameTools button{min-height:34px;font-size:10px;padding:4px 5px}
+body.touch-landscape #actions{grid-template-columns:repeat(3,minmax(0,1fr));width:258px;gap:5px;bottom:max(8px,env(safe-area-inset-bottom))}
+body.touch-landscape #actions button{min-height:42px;font-size:10px}
+body.touch-landscape #controls{bottom:max(8px,env(safe-area-inset-bottom));left:max(8px,env(safe-area-inset-left))}
+body.touch-landscape #joystickBase{width:126px;height:126px}
+body.touch-landscape #joystickHint{font-size:8px;margin-top:3px}
+body.touch-landscape #message{max-width:40vw}
+body.touch-landscape #rightRail,body.touch-landscape #chatDock,body.touch-landscape #mentorPanel{max-height:calc(var(--visible-height) - var(--tools-end) - 12px)}
+@media(max-width:350px){body.touch-layout #gameTools button{font-size:11px;padding:6px}body.touch-layout #actions{width:150px;gap:4px}body.touch-layout #actions button{min-height:42px;font-size:10px}body.touch-layout #controls{left:8px}body.touch-layout #joystickBase{width:118px;height:118px}}
+@media(prefers-reduced-motion:reduce){#joystickThumb{will-change:auto}}
+
+</style>
+</head><body><div id="rewardButtons" hidden aria-label="Optional ad rewards">
+  <button id="rewardMolt" type="button" aria-label="Watch an ad to reduce the next molt wait by up to three minutes"><span class="adBadge">AD</span><span class="rewardWords">Molt −3:00<small>Optional reward</small></span></button>
+  <button id="rewardCoins" type="button" aria-label="Watch an ad to earn fifty coins"><span class="adBadge">AD</span><span class="rewardWords">+50 coins<small>Optional reward</small></span></button>
+  <output id="walletBalance" aria-label="Your coins">0 coins</output>
+</div>
+<div id="rewardModal" hidden>
+  <section id="rewardDialog" role="dialog" aria-modal="true" aria-labelledby="rewardTitle" aria-describedby="rewardDescription" tabindex="-1">
+    <div class="rewardIcon" id="rewardIcon" aria-hidden="true">🪙</div>
+    <h2 id="rewardTitle">Optional reward</h2>
+    <p id="rewardDescription"></p>
+    <p id="rewardStatus" role="status" aria-live="polite"></p>
+    <div class="rewardDialogActions"><button id="rewardWatch" type="button" hidden>Watch ad</button><button id="rewardCancel" type="button">Keep playing</button></div>
+    <p class="rewardFineprint">Ads are optional. No reward is charged or lost if you decline. Rewards are granted only when the ad provider confirms completion.</p>
+    <div class="rewardLinks"><button id="rewardPrivacy" type="button">Ad privacy choices</button><a id="rewardPolicy" target="_blank" rel="noopener noreferrer" hidden>Privacy notice</a></div>
+  </section>
+</div>
+
+<div id="onlinePanel"><div id="onlineStatus">🌐 Offline — multiplayer not configured</div><div id="onlineCount">0 other players nearby</div><button id="onlineSettings">⚙ Online setup</button><button id="onlineToggle">Connect</button></div><div id="onlineSetup"><div><h2>🌐 Mantis Multiplayer</h2><p>One-time setup: create a Firebase project, enable <b>Authentication → Anonymous</b> and <b>Realtime Database</b>. Paste your Firebase web app configuration JSON below. Everyone using the same database shares the world.</p><textarea id="firebaseConfig" placeholder='{"apiKey":"...","authDomain":"...","databaseURL":"https://...firebasedatabase.app","projectId":"...","appId":"..."}'></textarea><p id="onlineError"></p><button id="onlineSave">Save configuration &amp; connect</button><button id="onlineClose">Close</button><p>Online usernames are display names, not secure accounts. Each device signs in anonymously; existing progress still saves only in this browser. PvP is a casual prototype, not cheat-resistant.</p></div></div><div id="chatDock"><h4>💬 World chat</h4><div id="chatLog" aria-live="polite">Connect to the shared world to chat.</div><form id="chatForm"><input id="chatInput" maxlength="120" placeholder="Say something…" autocomplete="off" aria-label="Chat message"><button id="chatSend" type="submit">Send</button></form></div><div id="petStats"></div><div id="nameTag"></div><div id="loading">Loading 3D world…</div><div id="login" style="display:none"><div class="panel"><h1>🦗 MANTIS<br>FRANCE SURVIVAL</h1><div>JOYSTICK & REWARDS 1.5</div><p>Hunt, evade predators, molt every five minutes, and challenge 100 dangerous arena masters in a stylized French city.</p><label for="username">Username</label><input id="username" maxlength="24" autocomplete="off" placeholder="Enter your username"><button id="play">PLAY / RESUME</button><p id="loginMessage">The same username loads its saved game on this browser. Different usernames have separate saves.</p></div></div><div id="hud"><div id="brand"><strong>🦗 MANTIS: FRANCE</strong><div id="stats">PvP & Full Reset 1.6</div></div><div id="bars"><div class="stat"><span>HP</span><div class="track"><div class="fill" id="hpbar"></div></div><b id="hptext"></b></div><div class="stat"><span>Hunger</span><div class="track"><div class="fill" id="hungerbar"></div></div><b id="hungertext"></b></div><div class="stat"><span>Energy</span><div class="track"><div class="fill" id="energybar"></div></div><b id="energytext"></b></div></div><div id="info">📍 Rue de la Convention, Paris (inspired layout)<br><span id="coords"></span></div></div><div id="objective">Objective: <span id="quest"></span><div id="moltClock"></div></div><button id="save">💾 Save &amp; Switch Username</button><div id="mentorPanel" style="display:none"><h3>🧙 The Mage</h3><p id="mentorText"></p><div class="buttons"><button id="mentorNext">NEXT ▶</button><button id="adoptPet">🐾 Adopt pet</button><button id="mentorHide">Hide</button></div></div><div id="petInfo"></div><button id="petsOpen">🎒 My Pets</button><div id="petPanel"><div class="petBox"><h2>🐾 Mage's Pet Sanctuary</h2><div class="muted">Open a 100-coin chest for a random pet. Equip up to four. Rarer pets have more HP and deal more damage.</div><div id="chest">📦</div><div id="petReveal">Choose a chest to begin!</div><div><button id="openChest">🪙 Open chest · 100 coins</button><button id="closePets">Close</button></div><div id="petOdds" class="muted">Common 55% · Uncommon 25% · Rare 12% · Epic 6% · Legendary 2%</div><h3>Your collection</h3><div id="petGrid"></div></div></div><button id="mentorShow" style="position:fixed;z-index:7;bottom:85px;left:12px">🧙 Mage</button><div id="message">Find a ladybird to hunt!</div><div id="fight"><b id="enemyname"></b><div class="track"><div class="fill" id="enemybar"></div></div><div id="fighttip">Space: strike · Keep moving to dodge</div></div><div id="controls"><span></span><button data-key="ArrowUp">▲</button><span></span><button data-key="ArrowLeft">◀</button><button data-key="ArrowDown">▼</button><button data-key="ArrowRight">▶</button></div><div id="actions"><button id="goSpawn" title="Emergency rescue from anywhere, even when giant or climbing. Shortcut R. Leaving an arena counts as defeat.">&#127968; GO TO SPAWN</button><button id="attack">⚔ STRIKE</button><button id="climb">🌳 CLIMB / DOWN</button><button id="molt">🦗 MOLT</button><button id="eat">🍴 EAT</button></div><div id="hint">WASD / arrows: move & turn · G: fly/land · Q/C: rise/descend · R: GO TO SPAWN · Space: strike · E: climb · M: molt · F: eat · Drag: camera</div><script>window.MANTIS_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyATc9JkSA6iscqX4m_kX1Z9reeKGKICDq4",
+  authDomain: "mantis-10f6a.firebaseapp.com",
+  databaseURL: "https://mantis-10f6a-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "mantis-10f6a",
+  storageBucket: "mantis-10f6a.firebasestorage.app",
+  messagingSenderId: "999005613716",
+  appId: "1:999005613716:web:fbe37bcf60462436940e81",
+  measurementId: "G-R8Q0FWPW3N"
+};</script><script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script><script>
+(()=>{'use strict';const $=id=>document.getElementById(id),T=window.THREE;if(!T){$('loading').textContent='Internet connection needed to load the 3D engine. Refresh when online.';return;}const scene=new T.Scene();scene.background=new T.Color(0xa8d5e4);scene.fog=new T.FogExp2(0xa6c9bf,.0027);const camera=new T.PerspectiveCamera(67,innerWidth/innerHeight,.1,950),renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;document.body.prepend(renderer.domElement);scene.add(new T.HemisphereLight(0xe6faff,0x516c44,2.15));const sun=new T.DirectionalLight(0xffe8b6,2.1);sun.position.set(60,120,80);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-110;sun.shadow.camera.right=110;sun.shadow.camera.top=110;sun.shadow.camera.bottom=-110;scene.add(sun);const mat=c=>new T.MeshStandardMaterial({color:c,roughness:.85}),green=mat(0x6aaf36),dark=mat(0x315e26),wood=mat(0x72502f),stone=mat(0xc4c0b3),road=mat(0x596067),grass=mat(0x70995a),red=mat(0xc23b3a),black=mat(0x282321),gold=mat(0xf3d46a);function mesh(g,m,x=0,y=0,z=0,parent=scene){const o=new T.Mesh(g,m);o.position.set(x,y,z);parent.add(o);return o}function box(w,h,d,m,x,y,z,p=scene){return mesh(new T.BoxGeometry(w,h,d),m,x,y,z,p)}function ball(r,m,x,y,z,p=scene){return mesh(new T.SphereGeometry(r,10,8),m,x,y,z,p)}function cyl(a,b,h,m,x,y,z,p=scene){return mesh(new T.CylinderGeometry(a,b,h,8),m,x,y,z,p)}function hash(a,b,c=0){const v=Math.sin(a*127.1+b*311.7+c*71.4)*43758.5453;return v-Math.floor(v)}function dist(x,z,a,b){return Math.hypot(x-a,z-b)}const obstacles=[],climbs=[],foods=[],ants=[],arenas=[],people=[],world=new T.Group();scene.add(world);mesh(new T.PlaneGeometry(2400,2400),grass,0,-.07,0,world).rotation.x=-Math.PI/2;const roadMat=road;for(let n=-9;n<=9;n++){box(10,.06,980,roadMat,n*50,.015,0,world);box(980,.06,10,roadMat,0,.016,n*50,world);box(2,.065,980,stone,n*50-6,.03,0,world);box(2,.065,980,stone,n*50+6,.03,0,world);box(980,.065,2,stone,0,.03,n*50-6,world);box(980,.065,2,stone,0,.03,n*50+6,world)}function addObstacle(x,z,r,type,h=0){obstacles.push({x,z,r,type,h})}function tree(x,z,scale=1){const g=new T.Group();g.position.set(x,0,z);world.add(g);cyl(.65*scale,.95*scale,7*scale,wood,0,3.5*scale,0,g);for(let i=0;i<3;i++)ball((3.7-i*.35)*scale,mat(i%2?0x4b853d:0x3e7834),(i-1)*1.2*scale,(7.5+i*2.2)*scale,(i%2?1:-1)*.5*scale,g);const branch=cyl(.21*scale,.27*scale,7.5*scale,wood,2.5*scale,5.4*scale,0,g);branch.rotation.z=1.08;climbs.push({x:x+2*scale,z,y:5.4*scale,type:'tree',scale,baseX:x,baseZ:z,branchX:x+2*scale,branchZ:z});addObstacle(x,z,1.2*scale,'tree',14*scale)}function twig(x,z,scale=1){const g=new T.Group();g.position.set(x,0,z);world.add(g);const main=cyl(.26*scale,.33*scale,7.2*scale,wood,0,2.5*scale,0,g);main.rotation.z=.72;const off=cyl(.13*scale,.17*scale,3.3*scale,wood,2.4*scale,4.3*scale,.3*scale,g);off.rotation.z=1.25;climbs.push({x,z,y:4.4*scale,type:'twig',scale});addObstacle(x,z,.5*scale,'twig',4.4*scale)}
+// Paris-inspired grid: actual geographic street positions are not claimed.
+for(let i=-9;i<9;i++)for(let j=-9;j<9;j++){const x=i*50+25,z=j*50+25,near=dist(x,z,0,0)<115,park=(i===3&&j>=-2&&j<=1)||(i<=-5&&j>=3)||hash(i,j)>.87;if(park){box(39,.05,39,mat(0x78a665),x,.02,z,world);for(let k=0;k<4;k++)tree(x+(hash(i,j,k)-.5)*29,z+(hash(j,i,k+7)-.5)*29,.7+hash(k,i,j)*.6)}else if(!near||hash(i,j)>.25){const h=13+hash(i,j,5)*23,w=29,d=29,b=box(w,h,d,mat(new T.Color().setHSL(.06+hash(i,j)*.045,.12,.48+hash(j,i)*.17)),x,h/2,z,world);b.castShadow=true;addObstacle(x,z,20,'building',h);for(let k=-2;k<=2;k++)for(let floor=0;floor<Math.min(5,Math.floor(h/4));floor++){box(2.2,2.2,.15,mat(0x98b8c1),x+k*4.5,3+floor*4,z-d/2-.08,world)}}else{for(let k=0;k<3;k++)tree(x+(k-1)*9,z+7,.8)}}
+for(let i=0;i<75;i++){const x=(hash(i,7)-.5)*850,z=(hash(3,i)-.5)*850;if(!blocked(x,z,1)&&dist(x,z,0,0)>15)twig(x,z,.85+hash(i,9)*.8)}twig(12,-11,1.15);tree(-13,-13,1.1);
+function blocked(x,z,r){if(Math.abs(x)>480||Math.abs(z)>480)return true;for(const o of obstacles){if(o.type==='building'){if(Math.abs(x-o.x)<15+r&&Math.abs(z-o.z)<15+r)return true}else if(dist(x,z,o.x,o.z)<o.r+r)return true}return false}
+const BABY_SIZE=.22;const mantis=new T.Group();scene.add(mantis);const shell=ball(.62,green,0,1.25,.63,mantis);shell.scale.set(.7,.6,1.65);const chest=cyl(.27,.37,1.55,green,0,1.75,-.32,mantis);chest.rotation.x=.52;const head=ball(.54,green,0,2.33,-.93,mantis);head.scale.set(1.22,.8,.78);for(const s of [-1,1]){ball(.2,dark,s*.47,2.43,-1.25,mantis);const a=cyl(.015,.027,1.05,dark,s*.25,2.94,-1.03,mantis);a.rotation.z=s*.4}const legs=[];for(let i=0;i<3;i++)for(const s of [-1,1]){const pivot=new T.Group();pivot.position.set(s*.4,1.4,.5-i*.53);mantis.add(pivot);const upper=cyl(.055,.075,1.3,green,s*.42,-.36,.1,pivot);upper.rotation.z=s*.75;const lower=cyl(.04,.055,1.25,dark,s*.89,-.98,.13,pivot);lower.rotation.z=-s*.42;legs.push({pivot,i,s})}const arms=[];for(const s of [-1,1]){const pivot=new T.Group();pivot.position.set(s*.43,2,-.72);mantis.add(pivot);const upper=cyl(.09,.16,1.2,green,s*.25,-.38,-.38,pivot);upper.rotation.x=.78;upper.rotation.z=s*.38;const claw=mesh(new T.ConeGeometry(.18,.75,8),dark,s*.38,-.78,-.95,pivot);claw.rotation.x=-.9;arms.push(pivot)}
+// Visual pass: segmented exoskeleton, compound eyes, antennae, wing cases and articulated limbs.
+const gloss=(c,metal=0)=>new T.MeshStandardMaterial({color:c,roughness:.38,metalness:metal});
+const lime=gloss(0x94cf55),jade=gloss(0x4c9139),eyeMat=gloss(0x132f20,.12),shine=gloss(0xc9f9a1),vein=gloss(0x718d57);
+function rodBetween(a,b,r,m,parent){const v1=new T.Vector3(...a),v2=new T.Vector3(...b),delta=v2.clone().sub(v1);const o=mesh(new T.CylinderGeometry(r*.72,r,delta.length(),6),m,0,0,0,parent);o.position.copy(v1.add(v2).multiplyScalar(.5));o.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),delta.normalize());return o}
+for(const side of [-1,1]){const eye=ball(.28,eyeMat,side*.44,2.48,-1.23,mantis);eye.scale.set(.9,1.08,.66);ball(.07,shine,side*.49,2.58,-1.41,mantis);rodBetween([side*.19,2.81,-1.13],[side*.36,3.32,-1.45],.018,dark,mantis);rodBetween([side*.36,3.32,-1.45],[side*.56,3.49,-1.66],.011,dark,mantis);for(let j=0;j<6;j++){const thorn=mesh(new T.ConeGeometry(.052,.19,5),dark,side*(.25+j*.025),1.39-j*.12,-1.12-j*.09,mantis);thorn.rotation.z=side*.75}}
+for(let i=0;i<5;i++){const segment=ball(.42-i*.027,i%2?jade:lime,0,1.31,.3+i*.28,mantis);segment.scale.set(.9,.36,.48)}
+for(const side of [-1,1]){const wing=ball(.28,side===1?jade:lime,side*.22,1.52,.72,mantis);wing.scale.set(.65,.14,2.4);wing.rotation.y=side*.15;for(let j=0;j<3;j++)rodBetween([side*.32,1.56,.25+j*.22],[side*(.34+j*.035),1.56,1.43],.008,vein,mantis)}
+for(const arm of arms){for(let j=0;j<5;j++){const tooth=mesh(new T.ConeGeometry(.065,.21,5),dark,Math.sign(arm.position.x)*(.23+j*.045),-.54-j*.07,-.57-j*.11,arm);tooth.rotation.z=Math.sign(arm.position.x)*.9}}
+for(const leg of legs)leg.pivot.userData.netLeg={i:leg.i,s:leg.s};
+for(let i=0;i<arms.length;i++)arms[i].userData.netArm=i;
+
+// Four hinged, veined wings unfold at molt seven; cloned by remote players.
+const flightWings=[];
+for(const side of [-1,1])for(let pair=0;pair<2;pair++){
+ const pivot=new T.Group();pivot.position.set(side*.21,1.57,.1+pair*.28);
+ pivot.userData.flightWing={side,pair,open:0};mantis.add(pivot);
+ const pts=[[0,0,0],[side*1.55,.06,.38],[side*2.25,0,1.8],[side*1.25,-.05,2.6],[side*.25,0,2.1]];
+ const positions=[];for(let i=1;i<pts.length-1;i++)positions.push(...pts[0],...pts[i],...pts[i+1]);
+ const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.computeVertexNormals();
+ const membrane=new T.MeshStandardMaterial({color:pair?0x9ccf96:0xcce6ac,transparent:true,opacity:pair?.43:.62,side:T.DoubleSide,roughness:.55,depthWrite:false});
+ mesh(geometry,membrane,0,0,0,pivot);
+ for(let i=1;i<pts.length;i++)rodBetween(pts[0],pts[i],.014,vein,pivot);
+ for(let i=0;i<pts.length;i++)rodBetween(pts[i],pts[(i+1)%pts.length],.012,vein,pivot);
+ pivot.visible=false;flightWings.push(pivot);
+}
+function animateWings(list,flying,molts,time,dt){
+ for(const p of list){const w=p.userData.flightWing;p.visible=molts>=7;if(!p.visible)continue;
+  w.open+=(Number(flying)-w.open)*(1-Math.exp(-10*dt));
+  p.rotation.y=w.side*(1-w.open)*1.15+w.side*w.pair*.13;
+  p.rotation.z=w.side*(w.open*(.22+Math.sin(time*Math.PI*14.4+w.pair*.7)*.48));
+  p.rotation.x=w.open*(-.13+w.pair*.14);
+ }
+}
+
+const networkMantisTemplate=mantis.clone(true);
+const prefixes=['Amber','Azure','Banded','Bark','Black','Blue','Bronze','Brown','Cedar','Cloud','Copper','Crimson','Dappled','Dusky','Emerald','Forest','Golden','Green','Ivory','Jade','Leaf','Marsh','Meadow','Moss','Night','Oak','Olive','Orange','Pearl','Pine','Red','River','Rose','Rust','Sage','Scarlet','Shadow','Silver','Spotted','Striped','Sun','Thorn','Velvet','Violet','Wild','Willow','Wood','Yellow','Zigzag','Speckled'];const kinds=['Ladybird','Aphid','Fruit Fly','Gnat','Midge','Moth','Beetle','Weevil','Cricket','Grasshopper','Cicada','Butterfly','Dragonfly','Wasp','Hornet','Stag Beetle','Cockroach','Stick Insect','Spider','Scorpion'];// 1000 different PROCEDURAL VISUAL recipes, not 1000 names for identical creatures.
+// Each recipe has one of 20 distinct palettes, 10 body shapes, and 5 ornament sets.
+const DESIGN_COUNT=1000;let nextPreyDesign=0;
+function preyDesign(index){const n=((index%DESIGN_COUNT)+DESIGN_COUNT)%DESIGN_COUNT;return {id:n,palette:n%20,shape:Math.floor(n/20)%10,pattern:Math.floor(n/200)%5}}
+const prettyKind=k=>String(k).replace(/(^|\s)\w/g,c=>c.toUpperCase());
+const MAX_MOLTS=10,FLIGHT_MOLT=7,MAX_ALTITUDE=180;
+const joystickInput={active:false,x:0,y:0};
+const flight={active:false,alt:0,vx:0,vz:0,vy:0,mode:'ground',bank:0,pitch:0,takeoffY:0};
+let surfaceY=0,cameraHeading=0,cameraSnapped=false,stickWasActive=false,stickReferenceYaw=0,lastRescuePointer=-Infinity;
+const ignoredKeys=new Set(),cameraAim=new T.Vector3();
+const state={username:'',x:0,z:0,heading:0,hp:100,hunger:78,energy:100,maxHP:100,molts:0,elapsed:0,moltAt:300,scale:1,kills:0,arenaWins:[],feed:0,quest:0,coins:0,pets:[],petInventory:[],mentorStep:0,climb:null,climbProgress:0,molting:0,attack:0,stun:0,soft:0,walk:0};let active=false,keys={},camYaw=0,toastUntil=0,currentFight=null,arenaCharge=null,autosave=0,bugClock=0;function notify(t,sec=3){$('message').textContent=t;toastUntil=performance.now()+sec*1000}
+
+function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v))}
+function angleDelta(a,b){return Math.atan2(Math.sin(a-b),Math.cos(a-b))}
+function maxHPForMolts(n){let hp=100;for(let i=0;i<n;i++)hp=Math.round(hp*1.3);return hp}
+function normalizeGrowth(){
+ const previousMax=Math.max(1,finite(state.maxHP,100)),previousMolts=finite(state.molts);
+ state.molts=clamp(Math.floor(previousMolts),0,MAX_MOLTS);state.scale=Math.pow(1.42,state.molts);
+ state.maxHP=maxHPForMolts(state.molts);state.hp=clamp(previousMolts>MAX_MOLTS?finite(state.hp,100)/previousMax*state.maxHP:finite(state.hp,100),1,state.maxHP);
+ state.x=clamp(finite(state.x),-479,479);state.z=clamp(finite(state.z),-479,479);state.heading=finite(state.heading);
+ state.elapsed=Math.max(0,finite(state.elapsed));state.moltAt=Math.max(0,finite(state.moltAt,state.elapsed+300));
+ state.hunger=clamp(finite(state.hunger,78),0,100);state.energy=clamp(finite(state.energy,100),0,100);state.soft=Math.max(0,finite(state.soft));
+}
+function collisionRadius(){return clamp(.22*state.scale,.22,1.5)}
+function walkSpeed(){return 4.3*Math.pow(1.2,clamp(state.molts,0,MAX_MOLTS))}
+function resetFlight(){Object.assign(flight,{active:false,alt:0,vx:0,vz:0,vy:0,mode:'ground',bank:0,pitch:0,takeoffY:0})}
+function clearMovementInput(){
+ for(const [k,v] of Object.entries(keys))if(v)ignoredKeys.add(k);keys={};dragging=false;
+ joystickInput.active=false;joystickInput.x=0;joystickInput.y=0;stickWasActive=false;window.mantisResetJoystick?.();
+ if(cameraPointer!==null){const id=cameraPointer;cameraPointer=null;try{renderer.domElement.releasePointerCapture(id)}catch(e){}}
+ for(const b of document.querySelectorAll('[data-key]'))if(b._pointerId!==undefined){try{b.releasePointerCapture(b._pointerId)}catch(e){}b._pointerId=undefined}
+}
+function blockedAt(x,z,y,r=collisionRadius()){
+ if(Math.abs(x)>479-r||Math.abs(z)>479-r)return true;
+ for(const o of obstacles){if(y>=o.h+.02)continue;if(o.type==='building'){if(Math.abs(x-o.x)<15+r&&Math.abs(z-o.z)<15+r)return true}else if(dist(x,z,o.x,o.z)<o.r+r)return true}
+ return false;
+}
+function supportHeight(x,z,ceiling=MAX_ALTITUDE){
+ let floor=0;for(const o of obstacles)if(o.type==='building'&&Math.abs(x-o.x)<14.8&&Math.abs(z-o.z)<14.8&&o.h+.08<=ceiling)floor=Math.max(floor,o.h+.08);
+ return floor;
+}
+function moveBody(dx,dz,y){
+ const steps=Math.max(1,Math.ceil(Math.max(Math.abs(dx),Math.abs(dz))/.35)),sx=dx/steps,sz=dz/steps;
+ for(let i=0;i<steps;i++){
+  if(currentFight){const edge=18-collisionRadius();if(Math.hypot(state.x+sx,state.z)<edge)state.x+=sx;if(Math.hypot(state.x,state.z+sz)<edge)state.z+=sz;continue}
+  if(!blockedAt(state.x+sx,state.z,y))state.x+=sx;else flight.vx=0;
+  if(!blockedAt(state.x,state.z+sz,y))state.z+=sz;else flight.vz=0;
+ }
+}
+function toggleFlight(){if(rewardAdIsBlocking())return;
+ if(!active)return;if(state.molts<FLIGHT_MOLT){notify('Wings unlock at molt 7. You have '+state.molts+' molts.');return}
+ if(currentFight){notify('Flight is available in the shared world, outside master arenas.');return}
+ if(state.molting>0)return;
+ if(flight.active){flight.mode=flight.mode==='landing'?'cruise':'landing';notify(flight.mode==='landing'?'Landing — steer to a clear spot.':'Landing cancelled.');return}
+ if(state.energy<3||state.stun>0){notify('Rest to recover energy before flying.');return}
+ const y=localHeight();resetFlight();flight.active=true;flight.alt=y;flight.takeoffY=Math.min(MAX_ALTITUDE,y+Math.max(3.5,state.scale*BABY_SIZE*.65));flight.mode='takeoff';
+ state.climb=null;state.climbProgress=0;surfaceY=0;clearMovementInput();notify('Wings open! Q / C to rise / descend. G to land.');
+}
+function landFlight(y){
+ if(y<=.1&&blockedAt(state.x,state.z,0)){const p=safeLanding(state.x,state.z);state.x=p.x;state.z=p.z;y=0}
+ resetFlight();surfaceY=Math.max(0,y);state.climb=null;state.climbProgress=0;clearMovementInput();save();netSend();notify('Landed. Your wings are folded.',2);
+}
+function updateFlight(dt,forward,turn){
+ const speed=walkSpeed()*1.8;const horizontal=Math.hypot(flight.vx,flight.vz),steer=2.0/(1+horizontal/Math.max(1,speed)*.8);
+ state.heading+=turn*dt*steer;
+ const throttle=forward<0?forward*.32:forward,targetX=-Math.sin(state.heading)*speed*throttle,targetZ=-Math.cos(state.heading)*speed*throttle;
+ const blend=1-Math.exp(-dt*(forward?1.5:2.0));flight.vx+=(targetX-flight.vx)*blend;flight.vz+=(targetZ-flight.vz)*blend;
+ const vertical=(keys.q?1:0)-(keys.c?1:0);let desiredY=vertical*clamp(walkSpeed()*.35,6,11);
+ if(flight.mode==='takeoff'){desiredY=5;if(flight.alt>=flight.takeoffY){flight.mode='cruise';desiredY=0}}
+ if(flight.mode==='landing'||state.energy<=0||state.stun>0){flight.mode='landing';desiredY=-6.5}
+ flight.vy+=(desiredY-flight.vy)*(1-Math.exp(-dt*3));
+ moveBody(flight.vx*dt,flight.vz*dt,flight.alt);
+ const before=flight.alt,next=clamp(before+flight.vy*dt,0,MAX_ALTITUDE),floor=supportHeight(state.x,state.z,before+.15);
+ if(flight.vy<=0&&next<=floor+.01){flight.alt=floor;landFlight(floor);return}
+ flight.alt=next;if(next>=MAX_ALTITUDE)flight.vy=Math.min(0,flight.vy);
+ flight.bank+=(-turn*.46-flight.bank)*(1-Math.exp(-dt*4));flight.pitch+=(clamp(flight.vy*.025,-.2,.2)-flight.pitch)*(1-Math.exp(-dt*4));
+}
+function updateCamera(dt,snap=false){
+ const y=localHeight(),bodyH=3.65*BABY_SIZE*state.scale;
+ if(snap||!cameraSnapped){cameraHeading=state.heading;cameraSnapped=true}else cameraHeading+=angleDelta(state.heading,cameraHeading)*(1-Math.exp(-dt*3));
+ const angle=cameraHeading+camYaw,ahead=bodyH*.32,range=Math.max(currentFight?12:7.5,6.5+bodyH*1.65)+(flight.active?Math.min(4,Math.hypot(flight.vx,flight.vz)*.06):0);
+ const aim=new T.Vector3(state.x-Math.sin(angle)*ahead,y+bodyH*.32,state.z-Math.cos(angle)*ahead);
+ const eye=new T.Vector3(state.x+Math.sin(angle)*range,Math.max(y+5+bodyH*1.4,aim.y+Math.tan(Math.PI*38/180)*(range+ahead)),state.z+Math.cos(angle)*range);
+ if(!currentFight)for(const o of obstacles)if(o.type==='building'&&Math.abs(eye.x-o.x)<16&&Math.abs(eye.z-o.z)<16)eye.y=Math.max(eye.y,o.h+3);
+ const blend=snap?1:1-Math.exp(-dt*6);camera.position.lerp(eye,blend);cameraAim.lerp(aim,blend);
+ const horizontal=Math.hypot(camera.position.x-cameraAim.x,camera.position.z-cameraAim.z);camera.position.y=Math.max(camera.position.y,cameraAim.y+Math.tan(Math.PI*36/180)*horizontal);
+ camera.lookAt(cameraAim);
+}
+
+function markCombat(){state.lastCombatAt=state.elapsed;state.regenClock=0}
+function recoverHealth(dt){
+  if(state.hunger<=0||!Number.isFinite(state.lastCombatAt))return;
+  if(state.elapsed-state.lastCombatAt<7){state.regenClock=0;return}
+  state.regenClock=(state.regenClock||0)+dt;
+  // Exactly one HP every fifth of a second, rather than a visible one-second jump.
+  const steps=Math.floor((state.regenClock+1e-9)/.2);
+  if(steps<1)return;
+  state.regenClock-=steps*.2;
+  if(state.hp>0)state.hp=Math.min(state.maxHP,state.hp+steps);
+  for(const p of petModels){if(p.hp>0&&p.hunger>0&&!p.respawnAt)p.hp=Math.min(p.maxHP,p.hp+steps)}
+}function save(){if(!state.username)return;try{const resume=(flight.active||surfaceY>0||state.climb)?safeLanding(state.x,state.z):{x:state.x,z:state.z};const s={...state,x:resume.x,z:resume.z,climb:null,climbProgress:0,rescueLockUntil:0,attack:0,molting:0,stun:0,arenaWins:[...state.arenaWins]};localStorage.setItem('mantis_france_v2_'+state.username.toLowerCase(),JSON.stringify(s));return true}catch(e){notify('Could not save: browser storage unavailable',5);return false}}function signIn(){if(rewardAdIsBlocking())return;const name=$('username').value.trim().replace(/[^a-zA-Z0-9_ -]/g,'').slice(0,24);if(!name){$('loginMessage').textContent='Please enter a username.';return}const data=localStorage.getItem('mantis_france_v2_'+name.toLowerCase());if(data){try{const s=JSON.parse(data);Object.assign(state,s);state.arenaWins=Array.isArray(s.arenaWins)?s.arenaWins:[];state.pets=Array.isArray(s.pets)?s.pets:[];state.petInventory=Array.isArray(s.petInventory)?s.petInventory:state.pets.map((name,i)=>({id:i+1,name,rarity:'Common',power:1}));state.coins=Number(s.coins)||0;state.mentorStep=Number(s.mentorStep)||0;if(state.pets.some(p=>typeof p==='string'))state.pets=state.pets.map(name=>state.petInventory.find(p=>p.name===name)?.id).filter(Boolean);state.climb=null;state.climbProgress=0;state.molting=0;state.stun=0;state.attack=0}catch(e){notify('Save could not be read. Starting fresh.')}}else{Object.assign(state,{x:0,z:0,heading:0,hp:100,hunger:78,energy:100,maxHP:100,molts:0,elapsed:0,moltAt:300,scale:1,kills:0,arenaWins:[],feed:0,quest:0,coins:0,pets:[],petInventory:[],mentorStep:0,climb:null,climbProgress:0,molting:0,attack:0,stun:0,soft:0,walk:0})}state.username=name;state.displayName=String((data&&state.displayName)||name).replace(/[<>&"']/g,'').slice(0,24);state.safeUntil=0;state.spawnReadyAt=0;state.warpAt=Date.now();state.lastCombatAt=state.elapsed;state.regenClock=0;normalizeGrowth();resetFlight();surfaceY=0;clearMovementInput();if(blockedAt(state.x,state.z,0)){const p=safeLanding(state.x,state.z);state.x=p.x;state.z=p.z}updateCamera(0,true);active=true;$('login').style.display='none';notify('Welcome, '+name+'! The Mage has a quest for you.',5);openMentor();setTimeout(()=>{if(active)netConnect()},500)}$('play').onclick=signIn;$('username').addEventListener('keydown',e=>{if(e.key==='Enter')signIn()});$('save').onclick=()=>{if(!active||rewardAdIsBlocking())return;netDisconnect();save();active=false;clearMovementInput();resetFlight();surfaceY=0;if(currentFight){const e=currentFight;currentFight=null;setBattleView(false);state.x=e.returnX;state.z=e.returnZ;state.heading=e.returnHeading;save()}$('fight').style.display='none';$('login').style.display='grid';$('mentorPanel').style.display='none';$('username').value=state.username;$('loginMessage').textContent='Progress saved on this browser. Enter a username to continue or start another.'};
+function insect(x,z,kind='ladybird',tier=0,group=-1){
+ const o=new T.Group();scene.add(o);
+ const design=preyDesign((nextPreyDesign++*317+89)%DESIGN_COUNT);
+ const colors={ladybird:0xc9282e,ant:0x30231d,beetle:0x755d35,fly:0x647a88,moth:0xa89a7d,spider:0x48372c,wasp:0xe2b638,hornet:0xa56b28,scorpion:0x805335,dragonfly:0x319ca5,cricket:0x568a3d,mantis:0x4e963b};
+ // Palette shifts are major visible colors, not merely different names.
+ const primaryColor=new T.Color().setHSL(design.palette/20,.52+(design.shape%3)*.12,.30+(design.pattern%3)*.075);
+ const accentColor=new T.Color().setHSL(((design.palette+7)%20)/20,.72,.66);
+ const base=gloss(primaryColor),accent=gloss(accentColor),darkShell=gloss(0x26241d);
+ const lightWing=new T.MeshStandardMaterial({color:accentColor,transparent:true,opacity:.6,roughness:.45,side:T.DoubleSide});
+ const isAnt=kind==='ant',isSpider=kind==='spider',isScorpion=kind==='scorpion',isFly=['fly','moth','dragonfly','wasp','hornet'].includes(kind);
+ const abdomen=ball(isSpider?.28:.26,base,0,.28,.12,o);abdomen.scale.set(1,.68,isAnt?1.2:1.42);
+ const thorax=ball(.16,base,0,.27,-.17,o),head=ball(.14,kind==='ladybird'?darkShell:base,0,.27,-.39,o);
+ // Ten silhouette families: short/long abdomens, broad/narrow bodies and
+ // visibly different heads, antennae, side fins and dorsal horns.
+ abdomen.scale.z*=.72+design.shape*.11;
+ abdomen.scale.x*=.7+(design.shape%5)*.17;
+ head.scale.set(.8+(design.shape%4)*.17, .8+(design.shape%3)*.2, .85+(design.shape%2)*.3);
+ thorax.scale.y=1+(design.shape%5)*.14;
+ if(design.shape>=5)for(const side of [-1,1]){
+   const fin=ball(.11+(design.shape-5)*.026,accent,side*.2,.39,.12,o);
+   fin.scale.set(1.4,.3,1.5+(design.shape%3)*.65);fin.rotation.z=side*.35;
+ }
+ if(design.shape%3===0){for(const side of [-1,1]){
+   const horn=mesh(new T.ConeGeometry(.05,.22+design.shape*.045,6),accent,side*.11,.5,-.37,o);
+   horn.rotation.z=side*.28;
+ }}else if(design.shape%3===1){for(const side of [-1,1]){
+   rodBetween([side*.12,.32,-.47],[side*.22,.68+design.shape*.03,-.67],.016,accent,o);
+ }}
+ // Five distinct, geometry-based markings (dots, ridges, stripe bands,
+ // raised crests, sharp plates). Each palette x silhouette x marking is unique.
+ if(design.pattern===0){for(let j=0;j<5;j++)ball(.035+(j%2)*.012,accent,(j%2?-.1:.1),.46,.02+j*.12,o)}
+ if(design.pattern===1){for(let j=0;j<4;j++){const band=ball(.15,accent,0,.43,.03+j*.16,o);band.scale.set(1,.12,.23)}}
+ if(design.pattern===2){for(let j=0;j<4;j++){
+   const spike=mesh(new T.ConeGeometry(.055,.2,5),accent,0,.50,.05+j*.16,o);spike.rotation.x=.3;
+ }}
+ if(design.pattern===3){for(const side of [-1,1])for(let j=0;j<3;j++){
+   const spot=ball(.06,accent,side*.17,.35,.02+j*.2,o);spot.scale.set(1,.28,1.2);
+ }}
+ if(design.pattern===4){for(const side of [-1,1]){
+   const crest=ball(.095,accent,side*.17,.46,.2,o);crest.scale.set(.5,1.5,2.6);
+ }}
+ for(const side of [-1,1]){
+  ball(.047,eyeMat,side*.12,.32,-.48,o);
+  rodBetween([side*.07,.35,-.45],[side*.18,.53,-.63],.009,darkShell,o);
+  const count=isSpider||isScorpion?4:3;
+  for(let j=0;j<count;j++){const z=-.23+j*.17;rodBetween([side*.13,.25,z],[side*(.31+j*.02),.24,z+.035],.019,base,o);rodBetween([side*(.31+j*.02),.24,z+.035],[side*(.42+j*.025),.04,z+.13],.012,darkShell,o)}
+ }
+ if(kind==='ladybird'){for(const side of [-1,1]){const cover=ball(.19,gloss(0xd93132),side*.12,.39,.13,o);cover.scale.set(.75,.23,1.55);for(let j=0;j<3;j++)ball(.046,darkShell,side*(.11+j%2*.09),.46,-.04+j*.17,o)}rodBetween([0,.47,-.1],[0,.47,.4],.008,darkShell,o)}
+ if(isAnt){for(let j=0;j<2;j++)ball(.095,darkShell,0,.27,.05+j*.17,o)}
+ if(isFly){for(const side of [-1,1]){const wing=ball(.2,lightWing,side*.26,.43,.07,o);wing.scale.set(1.4,.07,kind==='dragonfly'?2.8:1.8);wing.rotation.y=side*(kind==='dragonfly'?.48:.36);if(kind==='dragonfly'){const back=ball(.18,lightWing,side*.28,.42,.29,o);back.scale.set(1.1,.055,2.2);back.rotation.y=-side*.42}}}
+ if(isSpider||isScorpion){ball(.13,darkShell,0,.36,.22,o);if(isScorpion){for(let j=0;j<4;j++)ball(.095,base,0,.35+j*.13,.38+j*.09,o);const sting=mesh(new T.ConeGeometry(.095,.26,7),darkShell,0,.92,.73,o);sting.rotation.x=-.8}}
+ if(kind==='cricket'||kind==='mantis'){for(const side of [-1,1])rodBetween([side*.16,.27,.12],[side*.46,.55,.44],.032,base,o)}
+ o.position.set(x,0,z);return {o,x,z,kind,tier,group,hp:8+tier*8,maxHP:8+tier*8,damage:['ant','spider','wasp','hornet','scorpion','mantis'].includes(kind)?8+tier*4:2+tier,alive:true,phase:hash(x,z)*6.28,attackTimer:0,deadTimer:0,designId:design.id,species:prettyKind(kind)+' design #'+String(design.id+1).padStart(4,'0')}
+}
+for(let i=0;i<240;i++){const x=(hash(i,19)-.5)*840,z=(hash(i,23)-.5)*840;if(!blocked(x,z,2)&&dist(x,z,0,0)>16)foods.push(insect(x,z,['ladybird','beetle','fly','moth','spider','wasp','hornet','scorpion','dragonfly','cricket','mantis'][i%11],Math.floor(dist(x,z,0,0)/145)))}foods.push(insect(5,-7,'ladybird'));foods.push(insect(-8,-5,'ladybird'));for(let g=0;g<15;g++){const x=(hash(g,71)-.5)*700,z=(hash(g,73)-.5)*700;if(blocked(x,z,7)||dist(x,z,0,0)<25)continue;for(let i=0;i<5;i++){const bx=x+(i-2)*.8,bz=z+(i%2)*1.4;ants.push(insect(bx,bz,'ant',Math.floor(dist(x,z,0,0)/180),g))}}for(let i=0;i<24;i++){let x=(hash(i,84)-.5)*750,z=(hash(i,86)-.5)*750;if(blocked(x,z,2))continue;const p=new T.Group();scene.add(p);const coat=gloss(i%3===0?0x4e6c83:i%3===1?0x8d654d:0x536b55);cyl(.25,.31,1.35,coat,0,1.74,0,p);ball(.29,gloss(0xd6a47f),0,2.67,0,p);const hair=ball(.305,gloss(i%4===0?0x30231e:0x5e4632),0,2.88,.06,p);hair.scale.set(1,.42,1);for(const side of [-1,1]){rodBetween([side*.24,2.22,0],[side*.37,1.25,.08],.085,coat,p);rodBetween([side*.13,1.15,0],[side*.17,.2,-.09],.11,gloss(0x35404b),p);ball(.14,black,side*.17,.1,-.19,p);ball(.045,black,side*.11,2.69,-.27,p)}ball(.055,gloss(0xa86e5a),0,2.52,-.29,p);p.position.set(x,0,z);people.push({o:p,x,z,alive:true,hp:65,phase:i})}
+function arenaPosition(i){if(i===0)return {x:20,z:-19};const ring=Math.floor(Math.sqrt(i))*30+38,angle=i*2.399963;return {x:Math.sin(angle)*Math.min(415,ring),z:Math.cos(angle)*Math.min(415,ring)}}for(let i=0;i<100;i++){let p=arenaPosition(i);for(let attempt=0;attempt<18&&blocked(p.x,p.z,5);attempt++){p.x+=Math.sin(i*4+attempt)*8;p.z+=Math.cos(i*3+attempt)*8}if(blocked(p.x,p.z,5))continue;const material=new T.MeshBasicMaterial({color:i<10?0x8fffa8:i<60?0xffd56e:0xff718c,transparent:true,opacity:.68,side:T.DoubleSide});const ring=mesh(new T.RingGeometry(3.4,3.8,32),material,p.x,.08,p.z);ring.rotation.x=-Math.PI/2;const holo=new T.Group();scene.add(holo);holo.position.set(p.x,1.6,p.z);ball(.55,mat(i<20?0x9ab856:i<60?0x9062aa:0xc05a49),0,0,0,holo);ball(.24,black,0,.13,-.48,holo);const number=makeLabel('#'+(i+1),i<10?'#9cfba2':'#ffe4a0');number.position.set(p.x,3,p.z);scene.add(number);arenas.push({i,x:p.x,z:p.z,ring,holo,charge:0,won:false})}function makeLabel(txt,color){const c=document.createElement('canvas');c.width=128;c.height=64;const ctx=c.getContext('2d');ctx.fillStyle='#0e291fd9';ctx.fillRect(0,0,128,64);ctx.font='bold 35px Arial';ctx.textAlign='center';ctx.fillStyle=color;ctx.fillText(txt,64,43);const t=new T.CanvasTexture(c),sprite=new T.Sprite(new T.SpriteMaterial({map:t,transparent:true}));sprite.scale.set(4,2,1);return sprite}
+function nearest(arr,range=Infinity){let best=null,d=range;for(const o of arr){if(o.alive===false)continue;const q=dist(state.x,state.z,o.x,o.z);if(q<d){d=q;best=o}}return {o:best,d}}function climb(){if(rewardAdIsBlocking())return;if(!active)return;if(flight.active){notify('Land before climbing.');return}if(currentFight){notify('No climbing during an arena battle.');return}if(state.molting>0)return;if(state.climb){state.climb={...state.climb,descending:!state.climb.descending};state.climbProgress=Math.max(.01,state.climbProgress);notify(state.climb.descending?'Climbing down. GO TO SPAWN also works here.':'Climbing back up.');return}const n=nearest(climbs,Math.max(2.6,3.2*state.scale));if(!n.o){notify('You must stand beside a real twig or tree to climb.');return}state.climb={...n.o,baseX:n.o.baseX??n.o.x,baseZ:n.o.baseZ??n.o.z,branchX:n.o.branchX??n.o.x,branchZ:n.o.branchZ??n.o.z};state.climbProgress=0;notify('Climbing '+n.o.type+' — hang upside down to molt.')}function eat(){if(rewardAdIsBlocking())return;if(state.feed>0){state.hunger=Math.min(100,state.hunger+Math.min(45,state.feed));state.feed=0;notify('Feeding complete. Hunger restored.')}else notify('Catch prey first, then press EAT.')}function strike(){if(rewardAdIsBlocking())return;if(!active||state.attack>0||state.molting>0||state.stun>0)return;state.attack=1.15;markCombat();if(netStrike())return;if(!currentFight&&localHeight()>2+state.scale*.2){notify('Too high to strike ground prey. Descend first.');return}const reach=1.45*state.scale;if(currentFight){const e=currentFight;if(dist(state.x,state.z,e.x,e.z)<Math.max(2.1,reach+1.3)){if(e.dodge>0||Math.random()<Math.min(.58,.17+e.level*.003)){notify('The master dodged your strike!',1.1)}else{const damage=7+state.molts*5;e.hp-=damage;notify('Hit '+e.name+' for '+damage+' damage!',1);if(e.hp<=0){const a=e.arena;state.arenaWins.push(a.i);a.won=true;a.ring.material.color.setHex(0x68a4ff);state.feed+=20;state.kills++;state.coins+=15+e.level;endArena(true)}}}else notify('Get closer to the master!',1.5);return}const n=nearest([...foods,...ants,...people],Math.max(1.6,reach));if(!n.o){notify('Strike missed. Approach your prey.');return}const b=n.o;if(people.includes(b)&&state.scale<5){notify('You are still too small to catch a human. Keep molting.',2);return}b.hp-=8+state.molts*5;if(b.hp<=0){b.alive=false;b.o.visible=false;state.feed+=b.kind?16+b.tier*4:50;state.kills++;state.coins+=3;if(b.kind==='ant')notify('Ant defeated! Watch out for the colony.');else notify((b.species||'Human')+' caught! Press EAT.')}else notify('Hit '+(b.kind||'human')+'! It may fight back.',1)}function molt(){if(rewardAdIsBlocking())return;if(!active)return;if(state.molts>=MAX_MOLTS){notify('Maximum reached: 10 molts.');return}if(currentFight){notify('Finish the battle before molting.');return}if(state.elapsed<state.moltAt){notify('Molt not ready: '+formatTime(state.moltAt-state.elapsed)+' remaining.');return}if(!state.climb||state.climbProgress<1){notify('Climb a twig or tree fully before molting!');return}if(state.molting>0)return;state.molting=7;notify('MOLTING! Hanging upside down and shedding your old skin…',6)}function finishMolt(){
+ if(state.molts>=MAX_MOLTS){state.molting=0;return}
+ state.molts++;state.scale=Math.pow(1.42,state.molts);state.maxHP=maxHPForMolts(state.molts);state.hp=Math.max(10,Math.round(state.maxHP*.32));state.soft=100;state.moltAt=state.elapsed+300;state.molting=0;
+ const landing=safeLanding(state.climb?.baseX??state.x,state.climb?.baseZ??state.z);state.x=landing.x;state.z=landing.z;state.climb=null;state.climbProgress=0;surfaceY=0;resetFlight();clearMovementInput();updateCamera(0,true);
+ notify('MOLT '+state.molts+' / 10 COMPLETE! Size ×'+state.scale.toFixed(2)+(state.molts===7?' · WINGS UNLOCKED!':state.molts===10?' · Maximum molt reached.':' · Weak shell for 100 seconds.'),6);save();
+}
+function formatTime(s){s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}$('attack').onclick=strike;$('climb').onclick=climb;$('molt').onclick=molt;$('eat').onclick=eat;for(const b of document.querySelectorAll('[data-key]')){
+ const k=b.dataset.key;b.addEventListener('pointerdown',e=>{if(!active)return;e.preventDefault();keys[k]=true;b._pointerId=e.pointerId;b.setPointerCapture(e.pointerId)});
+ for(const type of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(type,()=>{keys[k]=false;b._pointerId=undefined});
+}
+window.addEventListener('keydown',e=>{if(rewardAdIsBlocking())return;
+ if(!active||e.target.closest?.('input,textarea,select,[contenteditable=true]'))return;
+ const key=e.key.toLowerCase();if(ignoredKeys.has(e.key)||ignoredKeys.has(key))return;
+ keys[key]=true;keys[e.key]=true;if([' ','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))e.preventDefault();
+ if(e.repeat)return;if(e.code==='Space')strike();if(key==='e')climb();if(key==='m')molt();if(key==='f')eat();if(key==='g')toggleFlight();if(key==='r'){e.preventDefault();returnToSpawn('button')}
+});
+window.addEventListener('keyup',e=>{keys[e.key]=false;keys[e.key.toLowerCase()]=false;ignoredKeys.delete(e.key);ignoredKeys.delete(e.key.toLowerCase())});
+window.addEventListener('blur',()=>{clearMovementInput();ignoredKeys.clear()});
+let dragging=false,lastX=0,cameraPointer=null;
+renderer.domElement.style.touchAction='none';
+renderer.domElement.addEventListener('pointerdown',e=>{if(rewardAdIsBlocking()||touchUiBlocksMovement())return;if(!active||cameraPointer!==null)return;dragging=true;cameraPointer=e.pointerId;lastX=e.clientX;renderer.domElement.setPointerCapture(e.pointerId)});
+for(const event of ['pointerup','pointercancel','lostpointercapture'])renderer.domElement.addEventListener(event,e=>{if(e.pointerId===cameraPointer){dragging=false;cameraPointer=null}});
+renderer.domElement.addEventListener('pointermove',e=>{if(dragging&&e.pointerId===cameraPointer){camYaw+=(e.clientX-lastX)*.006;lastX=e.clientX}});
+// A separate battle scene at the origin; the overworld is hidden until the fight ends.
+const battleWorld=new T.Group();scene.add(battleWorld);battleWorld.visible=false;
+const arenaFloor=mesh(new T.CylinderGeometry(19,19,1,64),mat(0x344b43),0,-.55,0,battleWorld);
+const arenaCenter=mesh(new T.CylinderGeometry(16,16,.08,64),mat(0x587e64),0,-.015,0,battleWorld);
+const arenaWallMat=mat(0x8fb79e);
+for(let i=0;i<32;i++){const a=i*Math.PI*2/32;const b=box(3.7,2,.65,arenaWallMat,Math.sin(a)*19,.7,Math.cos(a)*19,battleWorld);b.rotation.y=a}
+const enemyModel=new T.Group();battleWorld.add(enemyModel);
+const enemyShell=ball(.8,mat(0xb35a42),0,1.2,.25,enemyModel);enemyShell.scale.set(.85,.65,1.5);
+ball(.52,mat(0xd38c60),0,2,-.8,enemyModel);
+for(let j=0;j<5;j++){const plate=ball(.53-j*.04,gloss(j%2?0x9a4737:0xc16b48),0,1.21,.2+j*.25,enemyModel);plate.scale.set(.85,.26,.43)}for(const side of [-1,1]){ball(.22,eyeMat,side*.39,2.14,-1.16,enemyModel);ball(.055,shine,side*.43,2.2,-1.33,enemyModel);rodBetween([side*.18,2.36,-1],[side*.45,2.85,-1.3],.025,gloss(0x7b402f),enemyModel);for(let j=0;j<5;j++){const spike=mesh(new T.ConeGeometry(.09,.22,6),gloss(0x6f332a),side*(.5+j*.04),1.38-j*.14,-.82-j*.13,enemyModel);spike.rotation.z=side*.8}}for(const side of [-1,1]){ball(.18,black,side*.38,2.12,-1.13,enemyModel);const claw=new T.Group();claw.position.set(side*.5,1.75,-.65);enemyModel.add(claw);const limb=cyl(.13,.2,1.25,mat(0xa34b36),side*.28,-.3,-.5,claw);limb.rotation.x=.8;claw.userData.strikeArm=true;for(let i=0;i<3;i++){const leg=cyl(.065,.09,1.5,mat(0x8d4d39),side*.8,.48,(i-1)*.6,enemyModel);leg.rotation.z=side*.7}}
+// The Mage and adopted pets use simple procedural 3D models, with persistent per-username progression.
+const mage=new T.Group();scene.add(mage);const robe=mat(0x50398e),trim=mat(0xf2ca72),skin=mat(0xe5b993);
+const mageBody=mesh(new T.ConeGeometry(.5,1.6,10),robe,0,.9,0,mage);ball(.28,skin,0,1.86,0,mage);const hat=mesh(new T.ConeGeometry(.42,.9,10),robe,0,2.44,0,mage);cyl(.53,.53,.08,trim,0,2.02,0,mage);rodBetween([.55,.2,0],[.55,2.4,0],.06,wood,mage);ball(.17,mat(0x73e4e9),.55,2.48,0,mage);mage.position.set(2,0,3);
+const petModels=[];
+const rarityInfo={Common:{chance:55,power:1,color:'#d5e4d4'},Uncommon:{chance:25,power:1.5,color:'#77e6a4'},Rare:{chance:12,power:2.2,color:'#78baff'},Epic:{chance:6,power:3.3,color:'#dca0ff'},Legendary:{chance:2,power:5,color:'#ffd66b'}};
+const petPool={Common:[['Guardian Ant',0x7c4d2d],['Field Beetle',0x55833d],['Grasshopper',0x86b54c]],Uncommon:[['Emerald Beetle',0x3eaa72],['Amber Wasp',0xe6ae31],['Silver Moth',0xb2c5c7]],Rare:[['Moon Moth',0xa5b5e8],['Crystal Spider',0x63c9e3],['Royal Hornet',0xf0ac36]],Epic:[['Phantom Scorpion',0xa067d5],['Sunfire Dragonfly',0xf48c42]],Legendary:[['Celestial Mantis',0xffd777],['Ancient Titan Beetle',0xf5d55c]]};
+function petRecord(id){return (state.petInventory||[]).find(p=>p.id===id)}
+function syncPets(){const equipped=(state.pets||[]).map(p=>typeof p==='number'?petRecord(p):typeof p==='object'?p:(state.petInventory||[]).find(x=>x.name===p)).filter(Boolean);while(petModels.length>equipped.length){scene.remove(petModels.pop().o)}while(petModels.length<equipped.length){const pet=new T.Group();scene.add(pet);ball(.28,mat(0x64a45a),0,.3,.1,pet).scale.set(1,.7,1.5);ball(.16,black,0,.34,-.3,pet);for(const side of [-1,1])for(let k=0;k<3;k++)rodBetween([side*.15,.25,k*.2-.2],[side*.43,.04,k*.2-.2],.025,black,pet);petModels.push({o:pet,hp:35,maxHP:35,hunger:100,energy:100,attack:0,id:null,power:1,respawnAt:0})}for(let i=0;i<petModels.length;i++){const model=petModels[i],record=equipped[i];if(model.id!==record.id){model.id=record.id;model.power=record.power||1;model.maxHP=Math.round(35*model.power);model.hp=model.maxHP;model.hunger=record.hunger??100;model.energy=record.energy??100;model.respawnAt=0;const hex=(petPool[record.rarity]||[]).find(x=>x[0]===record.name)?.[1]||0x64a45a;model.o.traverse(o=>{if(o.isMesh&&o.material&&o.geometry.type==='SphereGeometry'){o.material=mat(hex)}})}model.o.visible=active}}
+function updatePetPanel(){const inv=state.petInventory||[];$('petGrid').innerHTML='';for(const p of inv){const equipped=state.pets.includes(p.id);const card=document.createElement('div');card.className='petCard';card.innerHTML='<strong></strong><div class="muted"></div>';card.querySelector('strong').textContent=p.name;card.querySelector('strong').style.color=rarityInfo[p.rarity]?.color||'#fff';card.querySelector('.muted').textContent=p.rarity+' · '+p.power+'× strength'+(equipped?' · Equipped':'');const stats=document.createElement('div');stats.className='muted';stats.textContent='HP '+Math.round(35*p.power)+' · Damage '+Math.round(4*p.power)+' · Hunger '+Math.round((petModels.find(m=>m.id===p.id)?.hunger??100))+'% · Energy '+Math.round((petModels.find(m=>m.id===p.id)?.energy??100))+'%';card.appendChild(stats);const feedBtn=document.createElement('button');feedBtn.textContent='🍴 Feed pet (15 of YOUR hunger)';feedBtn.onclick=()=>{
+  const m=petModels.find(x=>x.id===p.id);
+  const current=m?(m.hunger??100):(p.hunger??100);
+  if(current>=100){notify('This pet is already full!',2);return}
+  if(state.hunger<15){notify('Eat prey first! You need 15 hunger to feed a pet.',3);return}
+  state.hunger=Math.max(0,state.hunger-15); // Transfer food, not coins.
+  const fed=Math.min(100,current+45);
+  if(m)m.hunger=fed;p.hunger=fed;
+  notify('Pet fed! Your hunger -15, pet hunger +'+Math.round(fed-current)+'.',3);
+  save();updatePetPanel();
+};card.appendChild(feedBtn);const btn=document.createElement('button');btn.textContent=equipped?'Unequip':'Equip';btn.onclick=()=>{if(equipped)state.pets=state.pets.filter(id=>id!==p.id);else if(state.pets.length>=4){notify('You can equip only four pets!');return}else state.pets.push(p.id);syncPets();save();updatePetPanel();updateMentor()};card.appendChild(btn);$('petGrid').appendChild(card)}if(!inv.length)$('petGrid').textContent='No pets yet. Open your first chest!';$('openChest').disabled=state.coins<100||chestBusy}
+let chestBusy=false;function showPets(){$('petPanel').style.display='grid';updatePetPanel()}$('petsOpen').onclick=showPets;$('closePets').onclick=()=>{if(!chestBusy)$('petPanel').style.display='none'};
+$('openChest').onclick=()=>{if(chestBusy||state.coins<100)return;state.coins-=100;chestBusy=true;$('chest').className='shake';$('chest').textContent='📦';$('petReveal').textContent='The chest is shaking…';updatePetPanel();save();setTimeout(()=>{const r=Math.random()*100;let total=0,rarity='Common';for(const [name,data] of Object.entries(rarityInfo)){total+=data.chance;if(r<total){rarity=name;break}}const pool=petPool[rarity],choice=pool[Math.floor(Math.random()*pool.length)],pet={id:Date.now()+Math.floor(Math.random()*10000),name:choice[0],rarity,power:rarityInfo[rarity].power};state.petInventory.push(pet);$('chest').className='open';$('chest').textContent='🎁';$('petReveal').textContent=rarity.toUpperCase()+'! '+pet.name+' · '+pet.power+'× strength';$('petReveal').style.color=rarityInfo[rarity].color;if(state.pets.length<4)state.pets.push(pet.id);syncPets();save();updateMentor();updatePetPanel();setTimeout(()=>{chestBusy=false;$('chest').className='';$('openChest').disabled=state.coins<100},800)},1700)};
+const lessons=[
+{line:'Greetings, little mantis! I am the Mage. Use WASD or the arrow keys to walk. I will follow you.',done:()=>state.elapsed>=12,reward:5,goal:'Explore for 12 seconds'},
+{line:'Hunt a ladybird. Press Space to strike, then F to eat. Beware of ants!',done:()=>state.kills>=1,reward:10,goal:'Defeat your first insect'},
+{line:'You can adopt companions with your earned coins. Click Adopt pet and they will help fight!',done:()=>state.petInventory.length>=1,reward:12,goal:'Adopt your first pet'},
+{line:'Find a glowing challenge circle, stand in it for five seconds, then win the arena fight.',done:()=>state.arenaWins.length>=1,reward:25,goal:'Win your first arena'},
+{line:'Molting makes you grow! Every five minutes, climb a real branch or tree, then press M.',done:()=>state.molts>=1,reward:35,goal:'Complete your first molt'},
+{line:'Excellent! You are now a survivor. Keep hunting, growing, adopting pets and defeating masters.',done:()=>false,reward:0,goal:'Explore France and become legendary'}];
+function openMentor(){$('mentorPanel').style.display='block';updateMentor()}
+function updateMentor(){const n=Math.min(state.mentorStep,lessons.length-1),q=lessons[n];$('mentorText').textContent=q.line+'  Mission: '+q.goal+'.'+(q.done()?' ✓ Completed! Click Next to claim your reward.':'');$('mentorNext').textContent=q.done()?'CLAIM REWARD ▶':'NEXT ▶';$('adoptPet').textContent='🎁 Open pet chest';$('petInfo').textContent='🧙 Mage · 🪙 '+state.coins+' · 🐾 Equipped '+state.pets.length+'/4'}
+$('mentorNext').onclick=()=>{const q=lessons[Math.min(state.mentorStep,lessons.length-1)];if(!q.done()){notify('Complete the mission first: '+q.goal,3);return}state.coins+=q.reward;state.mentorStep=Math.min(lessons.length-1,state.mentorStep+1);notify('✓ Mission complete! You earned '+q.reward+' coins!',5);save();updateMentor()};
+$('adoptPet').onclick=showPets;
+$('mentorHide').onclick=()=>$('mentorPanel').style.display='none';$('mentorShow').onclick=openMentor;
+function updateCompanions(dt){if(!active)return;syncPets();const t=state.elapsed;revivePets();mage.visible=!currentFight;const targetX=state.x+Math.cos(t*.4)*2.1,targetZ=state.z+Math.sin(t*.4)*2.1;if(!currentFight){mage.position.x+=(targetX-mage.position.x)*Math.min(1,dt*2.3);mage.position.z+=(targetZ-mage.position.z)*Math.min(1,dt*2.3);mage.rotation.y=Math.atan2(state.x-mage.position.x,state.z-mage.position.z)}for(let i=0;i<petModels.length;i++){const p=petModels[i],o=p.o;p.attack-=dt;p.hunger=Math.max(0,(p.hunger??100)-dt*.012);p.energy=Math.max(0,Math.min(100,(p.energy??100)+dt*(p.attack>0?4:9)));
+ const rec=petRecord(p.id);if(rec){rec.hunger=p.hunger;rec.energy=p.energy;}if(p.hunger<=0)p.hp=Math.max(0,p.hp-dt*.25);const rival=!currentFight&&net.pvpUntil>netNow()?net.remotes.get(net.pvpOpponent):null;
+ let targetUid=null,pvpEnemy=null,bestPetTarget=65;
+ // Pets defend you and automatically descend to opponents below giant mantises.
+ // Prioritize an already engaged opponent, otherwise choose the nearest player.
+ if(!currentFight&&net.connected){
+   const ordered=[...(rival?[[net.pvpOpponent,rival]]:[]),...net.remotes.entries()];
+   for(const [uid,a] of ordered){const d=a?.data;if(!d||d.arena||finite(d.hp)<=0||finite(d.safeUntil)>netNow())continue;
+     const gap=dist(state.x,state.z,d.x,d.z);if(gap>65)continue;
+     if(!pvpEnemy||gap<bestPetTarget||uid===net.pvpOpponent){pvpEnemy=d;targetUid=uid;bestPetTarget=gap;if(uid===net.pvpOpponent)break;}
+   }
+ }
+ const enemy=currentFight?currentFight:pvpEnemy?{x:pvpEnemy.x,z:pvpEnemy.z,hp:pvpEnemy.hp}:nearest([...foods,...ants],6).o;const chasing=(localHeight()<1||!!pvpEnemy||!!currentFight)&&enemy&&enemy.hp>0&&(!('alive' in enemy)||enemy.alive)&&dist(state.x,state.z,enemy.x,enemy.z)<(currentFight?25:pvpEnemy?65:6);const px=chasing?enemy.x+Math.sin(t+i)*1.05:state.x+Math.sin(t*.8+i*2.4)*(1.2+i*.4),pz=chasing?enemy.z+Math.cos(t+i)*1.05:state.z+Math.cos(t*.8+i*2.4)*(1.2+i*.4);o.position.x+=(px-o.position.x)*Math.min(1,dt*3.8);o.position.z+=(pz-o.position.z)*Math.min(1,dt*3.8);o.position.y+=(Math.max(.15,(pvpEnemy?finite(pvpEnemy.y):localHeight())+.35)-o.position.y)*Math.min(1,dt*(pvpEnemy?4:3));o.rotation.y=Math.atan2(px-o.position.x,pz-o.position.z);if(p.hp<=0){if(!p.respawnAt)p.respawnAt=Date.now()+30000;if(Date.now()<p.respawnAt){o.visible=false;continue}p.hp=p.maxHP;p.respawnAt=0;notify('🐾 '+(petRecord(p.id)?.name||'Your pet')+' has returned!',2)}o.visible=true;if(chasing&&p.hunger>0&&p.energy>3&&dist(o.position.x,o.position.z,enemy.x,enemy.z)<2&&p.attack<=0){
+  if(pvpEnemy&&Math.abs(o.position.y-finite(pvpEnemy.y))>3.2)continue;
+  p.attack=1.25;markCombat();p.energy=Math.max(0,p.energy-3);
+  if(pvpEnemy){netSend();netSendHit(targetUid,Math.min(30,(4+state.molts*1.2)*p.power),{kind:'pet',attackerPetId:String(p.id)});continue;}
+  enemy.hp-=(4+state.molts*1.2)*p.power;if(currentFight&&enemy.hp<=0){const a=enemy.arena;state.arenaWins.push(a.i);state.coins+=15+enemy.level;state.kills++;endArena(true);notify('Your pets helped win! +'+(15+enemy.level)+' coins',4)}else if(!currentFight&&enemy.hp<=0){enemy.alive=false;enemy.o.visible=false;state.feed+=12;state.kills++;state.coins+=3}}}if(currentFight&&Math.random()<dt*.2){const living=petModels.filter(p=>p.hp>0);if(living.length){const p=living[Math.floor(Math.random()*living.length)];p.hp-=9;markCombat();if(p.hp<=0){p.respawnAt=Date.now()+30000;notify('A pet was knocked out! Respawns in 30 seconds.',3)}}}}
+function revivePets(){for(const p of petModels){if(p.hp<=0&&p.respawnAt&&Date.now()>=p.respawnAt){p.hp=p.maxHP;p.respawnAt=0;p.o.visible=true}}}
+function setBattleView(on){world.visible=!on;battleWorld.visible=on;for(const b of [...foods,...ants,...people])b.o.visible=!on&&b.alive;for(const a of arenas){a.ring.visible=!on;a.holo.visible=!on&&!state.arenaWins.includes(a.i)}if(on){scene.fog.density=.0015}else scene.fog.density=.0027}
+function endArena(won){if(!currentFight)return;clearMovementInput();resetFlight();surfaceY=0;cameraSnapped=false;const e=currentFight;currentFight=null;setBattleView(false);state.x=e.returnX;state.z=e.returnZ;state.heading=e.returnHeading;state.climb=null;state.climbProgress=0;$('fight').style.display='none';if(won){state.hp=Math.min(state.maxHP,Math.max(15,state.hp+Math.round(state.maxHP*.12)));notify('VICTORY! Returned to Paris. Arena #'+e.level+' cleared!',5)}else{resetAllProgressOnDeath();const home=safeSpawn();state.x=home.x;state.z=home.z;state.warpAt=netNow();notify('DEFEAT! All progress lost. Starting over as a baby mantis.',7)}save();netSend()}
+function startArena(a){if(currentFight||flight.active||localHeight()>.2||state.arenaWins.includes(a.i))return;clearMovementInput();resetFlight();surfaceY=0;const level=a.i+1;const hp=70+level*17;const returnX=state.x,returnZ=state.z,returnHeading=state.heading;currentFight={arena:a,returnX,returnZ,returnHeading,x:0,z:-8,hp,maxHP:hp,level,name:level>80?'Ancient Mantis Master':level>40?'Royal Predator':level>10?'Arena Hunter':'Young Hunter',timer:.7,phase:0,dodge:0,strike:0,decision:0};state.x=0;state.z=9;state.heading=0;state.climb=null;state.climbProgress=0;setBattleView(true);enemyModel.scale.setScalar(Math.min(3.5,.7+level*.024));enemyModel.position.set(0,0,-8);$('fight').style.display='block';notify('TELEPORTED! Arena #'+level+' — dodge the master and strike!',5)}
+function updateAI(dt){bugClock+=dt;if(bugClock<.12)return;const step=bugClock;bugClock=0;
+if(currentFight){const e=currentFight;e.timer-=step;e.phase+=step*(.7+e.level*.003);e.decision-=step;e.strike=Math.max(0,e.strike-step);e.dodge=Math.max(0,e.dodge-step);const d=dist(e.x,e.z,state.x,state.z);if(e.decision<=0){e.decision=.18+Math.random()*.5;e.strafe=(Math.random()<.5?-1:1);e.dodge=Math.random()<Math.min(.62,.23+e.level*.003)?.55:0}let vx=0,vz=0;if(d>2.3){vx=(state.x-e.x)/Math.max(.1,d);vz=(state.z-e.z)/Math.max(.1,d)}else if(d<1.7){vx=-(state.x-e.x)/Math.max(.1,d);vz=-(state.z-e.z)/Math.max(.1,d)}vx+=Math.cos(e.phase)*e.strafe*.65;vz+=Math.sin(e.phase)*e.strafe*.65;const speed=2.5+Math.min(2.3,e.level*.025)+(e.dodge>0?3:0);const nx=e.x+vx*speed*step,nz=e.z+vz*speed*step;if(Math.hypot(nx,nz)<16){e.x=nx;e.z=nz}enemyModel.position.set(e.x,0,e.z);enemyModel.rotation.y=Math.atan2(-(state.x-e.x),-(state.z-e.z));enemyModel.children.filter(c=>c.userData.strikeArm).forEach((c,i)=>c.rotation.x=e.strike>0?-1.2*Math.sin(e.strike*4):Math.sin(e.phase*3+i)*.1);
+if(d<Math.max(2.6,1.4+state.scale*.25)&&e.timer<=0){e.strike=.7;e.timer=Math.max(.48,1.45-e.level*.007);if(Math.random()<.07+Math.min(.13,e.level*.001)){notify('You dodged the master’s strike!',1.1)}else{const damage=7+e.level*.85;state.hp-=damage*(state.soft>0?1.5:1);markCombat();notify('Master strikes for '+Math.round(damage)+' damage! Dodge away!',1.1)}}$('enemyname').textContent='Arena '+e.level+' · '+e.name;$('enemybar').style.width=Math.max(0,100*e.hp/e.maxHP)+'%';if(state.hp<=0){endArena(false)}return}
+for(const b of [...foods,...ants]){if(!b.alive)continue;const d=dist(b.x,b.z,state.x,state.z),aggressive=b.kind==='ant'&&d<8&&localHeight()<Math.max(.7,state.scale*.15);
+if(aggressive){const vx=(state.x-b.x)/Math.max(d,.01),vz=(state.z-b.z)/Math.max(d,.01);const nx=b.x+vx*(1.6+Math.min(2,b.tier*.4))*step,nz=b.z+vz*(1.6+Math.min(2,b.tier*.4))*step;if(!blocked(nx,nz,.2)){b.x=nx;b.z=nz}b.attackTimer-=step;if(d<Math.max(.6,.65*state.scale)&&b.attackTimer<=0){state.hp-=b.damage*(state.soft>0?1.4:1);markCombat();b.attackTimer=.9+Math.random()*.65;notify((b.species||'Predator')+' attacks! Run or strike!',1.2)}}else{b.wanderTime=(b.wanderTime||0)-step;if(b.wanderTime<=0){b.wanderTime=.5+Math.random()*3.2;b.direction=Math.random()*Math.PI*2;b.speed=.2+Math.random()*.65;if(Math.random()<.17)b.speed=0}const nx=b.x+Math.sin(b.direction)*b.speed*step,nz=b.z+Math.cos(b.direction)*b.speed*step;if(!blocked(nx,nz,.2)){b.x=nx;b.z=nz}else{b.wanderTime=0}}b.o.position.set(b.x,0,b.z);if(b.speed!==0)b.o.rotation.y=aggressive?Math.atan2(state.x-b.x,state.z-b.z):(b.direction||0)}
+for(const p of people){if(!p.alive)continue;p.wanderTime=(p.wanderTime||0)-step;if(p.wanderTime<=0){p.wanderTime=1+Math.random()*4;p.direction=Math.random()*Math.PI*2;p.speed=.25+Math.random()*.6}const nx=p.x+Math.sin(p.direction)*p.speed*step,nz=p.z+Math.cos(p.direction)*p.speed*step;if(!blocked(nx,nz,.7)){p.x=nx;p.z=nz}else p.wanderTime=0;p.o.position.set(p.x,0,p.z);p.o.rotation.y=p.direction;const pd=dist(p.x,p.z,state.x,state.z);p.hitTimer=(p.hitTimer||0)-step;if(localHeight()<3&&pd<2.5*state.scale&&p.hitTimer<=0){state.hp-=Math.max(16,30-state.molts*1.5)*(state.soft>0?1.4:1);markCombat();p.hitTimer=1.2;notify('A human swats at you! Keep your distance.',1.5)}}}
+
+// Multiplayer patch: full-size models, visible health, reliable strikes, safe respawns.
+const net={db:null,auth:null,uid:null,ref:null,playersRef:null,hitsRef:null,
+  remotes:new Map(),connected:false,sendClock:0,petAttackClock:0,
+  hitSeen:new Set(),joining:false,serverOffset:0,offsetRef:null,
+  attackId:0,lastStrike:0,pvpUntil:0,pvpOpponent:null};
+function netNow(){return Date.now()+net.serverOffset}
+function netStatus(text){$('onlineStatus').textContent=text}
+function finite(value,fallback=0){return Number.isFinite(Number(value))?Number(value):fallback}
+function growth(value){return Math.max(.05,finite(value,1))}
+function localHeight(){return flight.active?flight.alt:state.climb?state.climb.y*Math.min(1,state.climbProgress*1.5):surfaceY}
+function netScript(url){return new Promise((resolve,reject)=>{
+  const script=document.createElement('script');script.src=url;script.onload=resolve;
+  script.onerror=()=>reject(Error('Could not load Firebase. Check your internet connection.'));
+  document.head.appendChild(script);
+})}
+
+// Clone the exact player mesh, not a separate miniature. Geometry is shared and
+// must NOT be disposed when a remote player leaves. Materials are private clones.
+function netAvatar(data){
+  const g=new T.Group(),avatar=networkMantisTemplate.clone(true),ownedMaterials=new Set();
+  const materialCopies=new Map(),remoteLegs=[],remoteArms=[],remoteWings=[];
+  avatar.traverse(object=>{
+    if(object.material){
+      const copy=material=>{
+        if(!materialCopies.has(material)){
+          const materialCopy=material.clone();materialCopies.set(material,materialCopy);
+          ownedMaterials.add(materialCopy);
+        }
+        return materialCopies.get(material);
+      };
+      object.material=Array.isArray(object.material)?object.material.map(copy):copy(object.material);
+    }
+    if(object.userData.flightWing)remoteWings.push(object);
+    if(object.userData.netLeg)remoteLegs.push({pivot:object,...object.userData.netLeg});
+    if(object.userData.netArm!==undefined)remoteArms[object.userData.netArm]=object;
+  });
+  avatar.position.set(0,0,0);avatar.rotation.set(0,0,0);
+  avatar.scale.setScalar(growth(data.scale)*BABY_SIZE);g.add(avatar);
+  g.position.set(finite(data.x),finite(data.y),finite(data.z));
+  g.rotation.y=finite(data.heading);
+  const label=document.createElement('canvas');label.width=512;label.height=128;
+  const texture=new T.CanvasTexture(label);
+  const labelMaterial=new T.SpriteMaterial({map:texture,transparent:true,depthTest:false});
+  const sprite=new T.Sprite(labelMaterial);sprite.renderOrder=20;g.add(sprite);
+  const pets=[];
+  for(let i=0;i<4;i++){
+    const pet=new T.Group(),bodyMat=new T.MeshStandardMaterial({color:[0xe4b45a,0x78d2a8,0x9eb9f1,0xd5a4eb][i],roughness:.7});
+    const darkMat=new T.MeshStandardMaterial({color:0x202c1d});
+    ball(.28,bodyMat,0,.3,.1,pet).scale.set(1,.7,1.5);ball(.16,darkMat,0,.34,-.3,pet);
+    for(const side of [-1,1])for(let k=0;k<3;k++)rodBetween([side*.15,.25,k*.2-.2],[side*.43,.04,k*.2-.2],.025,darkMat,pet);
+    pet.visible=false;scene.add(pet);pets.push(pet);
+  }
+  scene.add(g);
+  const entry={g,avatar,data,last:netNow(),pets,remoteLegs,remoteArms,remoteWings,ownedMaterials,
+    label,sprite,texture,labelMaterial,walk:0,attackClock:0,lastAttackId:finite(data.attackId),
+    lastLabel:'',flashUntil:0,lastWarp:data.warpAt||0};
+  updateRemoteLabel(entry);return entry;
+}
+function updateRemoteLabel(a){
+  const d=a.data,hp=Math.max(0,Math.ceil(finite(d.hp))),maxHP=Math.max(1,Math.ceil(finite(d.maxHP,100)));
+  const name=String(d.name||'Player').slice(0,24),safe=finite(d.safeUntil)>netNow();
+  const key=[name,hp,maxHP,safe].join('|');
+  if(key!==a.lastLabel){
+    a.lastLabel=key;const ctx=a.label.getContext('2d');ctx.clearRect(0,0,512,128);
+    ctx.fillStyle='rgba(8,30,23,.92)';ctx.fillRect(8,6,496,116);
+    ctx.textAlign='center';ctx.fillStyle='#f1fff4';ctx.font='bold 29px sans-serif';
+    ctx.fillText(name+(safe?' [safe]':''),256,40,478);
+    ctx.fillStyle='#273e34';ctx.fillRect(28,54,456,20);
+    ctx.fillStyle=safe?'#8ddaff':hp/maxHP<.3?'#ff8585':'#8ae198';
+    ctx.fillRect(28,54,456*Math.min(1,hp/maxHP),20);
+    ctx.fillStyle='white';ctx.font='22px sans-serif';ctx.fillText(hp+' / '+maxHP+' HP',256,106);
+    a.texture.needsUpdate=true;
+  }
+  const size=growth(d.scale)*BABY_SIZE;
+  const width=Math.max(1.55,Math.min(5,1.55*growth(d.scale)));
+  a.sprite.scale.set(width,width/4,1);a.sprite.position.y=size*3.65+.28;
+}
+function speechSprite(message){
+  const canvas=document.createElement('canvas');canvas.width=512;canvas.height=128;
+  const c=canvas.getContext('2d');c.fillStyle='rgba(11,34,29,.93)';c.fillRect(5,6,502,116);
+  c.strokeStyle='#a4e3b8';c.lineWidth=5;c.strokeRect(5,6,502,116);
+  c.fillStyle='white';c.font='bold 25px sans-serif';c.textAlign='center';
+  const words=String(message).slice(0,120).split(/\s+/);let lines=[''];
+  for(const word of words){if((lines[lines.length-1]+' '+word).length>32&&lines.length<3)lines.push(word);else lines[lines.length-1]+=' '+word}
+  lines.forEach((line,i)=>c.fillText(line.trim(),256,42+i*31,480));
+  const spr=new T.Sprite(new T.SpriteMaterial({map:new T.CanvasTexture(canvas),transparent:true,depthTest:false}));
+  spr.scale.set(3.8,.95,1);spr.renderOrder=21;return spr;
+}
+function removeBubble(group){const bubble=group.userData.bubble;if(bubble){group.remove(bubble);bubble.material.map.dispose();bubble.material.dispose();group.userData.bubble=null}}
+function showBubble(group,message){
+  removeBubble(group);const bubble=speechSprite(message);
+  if(group===mantis){const scale=Math.max(.01,growth(state.scale)*BABY_SIZE);bubble.position.y=3.7+1/scale;bubble.scale.set(2.8/scale,.7/scale,1)}
+  else{bubble.position.y=(group.userData.bodyHeight||1)+1.05;bubble.scale.set(2.8,.7,1)}
+  group.add(bubble);group.userData.bubble=bubble;
+  setTimeout(()=>{if(group.userData.bubble===bubble)removeBubble(group)},6500);
+}
+function addChatLine(name,message){
+  const log=$('chatLog'),line=document.createElement('div');line.textContent=String(name).slice(0,24)+': '+String(message).slice(0,120);
+  log.appendChild(line);while(log.children.length>25)log.firstChild.remove();log.scrollTop=log.scrollHeight;
+}
+let chatRef=null;
+function listenChat(){
+  if(!net.db)return;chatRef=net.db.ref('worldChat').limitToLast(20);
+  chatRef.on('child_added',snap=>{const d=snap.val();if(!d||!d.message||netNow()-(d.at||0)>86400000)return;
+    addChatLine(d.name||'Player',d.message);
+    if(d.uid===net.uid)showBubble(mantis,d.message);else{const remote=net.remotes.get(d.uid);if(remote)showBubble(remote.g,d.message)}
+  },error=>addChatLine('System','Chat unavailable: '+error.message));
+}
+$('chatForm').addEventListener('submit',event=>{
+  event.preventDefault();const input=$('chatInput'),message=input.value.trim().slice(0,120);if(!message)return;
+  if(!net.connected){notify('Chat needs an online connection.',3);return}
+  if(Date.now()-(net.lastChat||0)<1500){notify('Please wait before sending another message.');return}
+  net.lastChat=Date.now();input.value='';
+  net.db.ref('worldChat').push({uid:net.uid,name:state.displayName||state.username,message,at:firebase.database.ServerValue.TIMESTAMP})
+    .catch(error=>notify('Chat failed: '+error.message,4));
+});
+function netRemove(uid){
+  const a=net.remotes.get(uid);if(!a)return;removeBubble(a.g);scene.remove(a.g);
+  for(const material of a.ownedMaterials)material.dispose();
+  a.texture.dispose();a.labelMaterial.dispose();
+  for(const pet of a.pets){scene.remove(pet);const materials=new Set();pet.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)materials.add(o.material)});for(const m of materials)m.dispose()}
+  net.remotes.delete(uid);
+}
+function netClear(){for(const uid of [...net.remotes.keys()])netRemove(uid);$('onlineCount').textContent='0 other players online'}
+async function netDisconnect(){
+  const oldRef=net.ref;net.connected=false;net.ref=null;
+  if(net.playersRef)net.playersRef.off();net.playersRef=null;
+  if(net.hitsRef)net.hitsRef.off();net.hitsRef=null;
+  if(net.offsetRef)net.offsetRef.off();net.offsetRef=null;
+  if(chatRef)chatRef.off();chatRef=null;
+  netClear();net.hitSeen.clear();net.pvpOpponent=null;
+  netStatus('Offline');$('onlineToggle').textContent='Connect';
+  if(oldRef){try{await oldRef.remove()}catch(error){console.warn('Presence cleanup failed',error)}}
+}
+function cleanFirebaseConfig(text){
+  // Non-breaking spaces from formatted copy/paste are not JSON whitespace.
+  const clean=String(text).replace(/[\u00a0\u202f\ufeff]/g,' ').replace(/[\u201c\u201d]/g,'"').trim();
+  let c;try{c=JSON.parse(clean)}catch(error){throw Error('Paste only the JSON object, starting with { and ending with }. Your Firebase project has not changed.')}
+  for(const key of ['apiKey','databaseURL','projectId','appId'])if(typeof c[key]!=='string'||!c[key].trim())throw Error('Missing Firebase setting: '+key);
+  if(!/^https:\/\//.test(c.databaseURL))throw Error('databaseURL must start with https://');return c;
+}
+async function netConnect(){if(rewardAdIsBlocking())return;
+  if(net.joining||net.connected)return;net.joining=true;
+  try{
+    if(!active){netStatus('Sign in to the game first');return}
+    const config=window.MANTIS_FIREBASE_CONFIG||cleanFirebaseConfig(localStorage.getItem('mantis_firebase_config')||'{}');
+    if(!config.databaseURL||!config.apiKey||!config.projectId||!config.appId)throw Error('Firebase web configuration is incomplete.');
+    netStatus('Connecting...');
+    if(!window.firebase)await netScript('https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js');
+    if(!firebase.auth)await netScript('https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js');
+    if(!firebase.database)await netScript('https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js');
+    if(!firebase.apps.length)firebase.initializeApp(config);
+    net.auth=firebase.auth();await net.auth.signInAnonymously();if(!active||rewardAdIsBlocking())return;
+    net.uid=net.auth.currentUser.uid;net.db=firebase.database();net.ref=net.db.ref('players/'+net.uid);
+    net.playersRef=net.db.ref('players');net.hitsRef=net.db.ref('hits/'+net.uid);
+    net.offsetRef=net.db.ref('.info/serverTimeOffset');net.offsetRef.on('value',snap=>{net.serverOffset=finite(snap.val())});
+    await net.ref.onDisconnect().remove();
+    if(!active||rewardAdIsBlocking()){await netDisconnect();return;}
+    // The payload preserves all fields required by the existing Firebase rules.
+    await net.ref.set(netPayload());
+    if(!active||rewardAdIsBlocking()){await netDisconnect();return;}net.connected=true;
+    netStatus('Connected as '+(state.displayName||state.username));$('onlineToggle').textContent='Disconnect';
+    net.playersRef.on('child_added',netReceive,error=>netStatus('Player sync failed: '+error.message));
+    net.playersRef.on('child_changed',netReceive);
+    net.playersRef.on('child_removed',snap=>netRemove(snap.key));
+    net.hitsRef.on('child_added',netReceiveHit,error=>netStatus('Combat receive failed: '+error.message));
+    listenChat();$('onlineError').textContent='';
+  }catch(error){
+    net.connected=false;netStatus('Connection error: '+error.message);$('onlineError').textContent=error.message;
+    if(net.playersRef)net.playersRef.off();if(net.hitsRef)net.hitsRef.off();if(net.offsetRef)net.offsetRef.off();
+  }finally{net.joining=false}
+}
+function netReceive(snap){
+  if(!net.connected||snap.key===net.uid)return;const d=snap.val();
+  if(!d||!Number.isFinite(d.x)||!Number.isFinite(d.z)||!Number.isFinite(d.scale)||d.scale<=0||
+     Math.abs(d.x)>2000||Math.abs(d.z)>2000||netNow()-finite(d.at)>20000||d.arena){netRemove(snap.key);return}
+  let a=net.remotes.get(snap.key);
+  if(!a){a=netAvatar(d);net.remotes.set(snap.key,a)}
+  else{
+    if(finite(d.hp)<finite(a.data.hp))a.flashUntil=performance.now()+220;
+    if(finite(d.attackId)!==a.lastAttackId){a.lastAttackId=finite(d.attackId);a.attackClock=1.15}
+    if((d.warpAt||0)!==a.lastWarp){a.lastWarp=d.warpAt||0;a.g.position.set(d.x,finite(d.y),d.z)}
+  }
+  a.data=d;a.last=netNow();updateRemoteLabel(a);
+}
+function netPayload(){
+  const petState={};petModels.forEach((p,i)=>{petState['p'+i]={id:String(p.id),x:p.o.position.x,y:p.o.position.y,z:p.o.position.z,
+    heading:p.o.rotation.y,hp:Math.max(0,Math.ceil(p.hp)),maxHP:p.maxHP,power:p.power,respawnAt:p.respawnAt||0}});
+  return {name:String(state.displayName||state.username).slice(0,24),x:state.x,y:localHeight(),z:state.z,heading:state.heading,
+    scale:growth(state.scale),molts:state.molts,hp:Math.max(0,Math.ceil(state.hp)),maxHP:Math.ceil(state.maxHP),
+    pets:Math.min(4,state.pets.length),petState,arena:!!currentFight,
+    tilt:flight.active?flight.pitch:state.climb?Math.PI*Math.max(0,(state.climbProgress-.78)/.22):0,
+    flying:flight.active,roll:flight.bank,flightMode:flight.mode,flightSpeed:Math.hypot(flight.vx,flight.vz),
+    attackId:net.attackId,attack:state.attack,safeUntil:state.safeUntil||0,warpAt:state.warpAt||0,
+    version:3,at:firebase.database.ServerValue.TIMESTAMP};
+}
+function netSend(){if(rewardAdIsBlocking())return;
+  if(!net.connected||!active||!net.ref)return;
+  net.ref.set(netPayload()).catch(error=>netStatus('Sync failed: '+error.message));
+}
+function remotePets(d){return d.petState&&typeof d.petState==='object'?Object.values(d.petState).slice(0,4):[]}
+function clearAttackPath(x1,z1,x2,z2,y=0){
+  const distance=dist(x1,z1,x2,z2),steps=Math.min(100,Math.max(2,Math.ceil(distance/.35)));
+  for(let i=1;i<steps;i++){
+    const x=x1+(x2-x1)*i/steps,z=z1+(z2-z1)*i/steps;
+    for(const o of obstacles){
+      if(o.type==='building'&&y<o.h+.15&&Math.abs(x-o.x)<15&&Math.abs(z-o.z)<15)return false;
+      if(y<o.h+.15&&o.type==='tree'&&dist(x,z,o.x,o.z)<o.r*.72)return false;
+    }
+  }
+  return true;
+}
+function netTargetInReach(d,requireFacing=true){
+  if(!d||d.arena||finite(d.hp)<=0||finite(d.safeUntil)>netNow()||finite(state.safeUntil)>netNow())return false;
+  const myScale=growth(state.scale),theirScale=growth(d.scale),distance=dist(state.x,state.z,d.x,d.z);
+  const reach=Math.max(.9,1.45*myScale+.48*theirScale);
+  if(distance>reach)return false;
+  if(Math.abs(localHeight()-finite(d.y))>.85+.5*(myScale+theirScale))return false;
+  if(requireFacing&&distance>.3*(myScale+theirScale)){
+    const facing=(-Math.sin(state.heading)*(d.x-state.x)-Math.cos(state.heading)*(d.z-state.z))/Math.max(.001,distance);
+    if(facing<.05)return false;
+  }
+  return clearAttackPath(state.x,state.z,d.x,d.z,Math.min(localHeight(),finite(d.y)));
+}
+function netSendHit(uid,damage,extra={}){
+  if(!net.connected||!net.db)return Promise.resolve(false);
+  const name=String(state.displayName||state.username).slice(0,24);
+  return net.db.ref('hits/'+uid).push({from:net.uid,name,damage:Math.min(30,Math.max(1,Math.round(damage))),
+    ...extra,at:firebase.database.ServerValue.TIMESTAMP}).then(()=>true).catch(error=>{
+      notify('Attack could not be sent: '+error.message,5);netStatus('Combat write failed: '+error.message);return false;
+    });
+}
+function netReceiveHit(snap){if(rewardAdIsBlocking())return;
+  const hit=snap.val(),id=snap.key;
+  try{
+    if(net.hitSeen.has(id))return;net.hitSeen.add(id);
+    if(net.hitSeen.size>250)net.hitSeen.delete(net.hitSeen.values().next().value);
+    if(!hit||hit.from===net.uid||!Number.isFinite(hit.damage)||hit.damage<1||hit.damage>30||
+       !Number.isFinite(hit.at)||hit.at<netNow()-12000||hit.at>netNow()+5000||!active||currentFight||finite(state.safeUntil)>netNow())return;
+    const source=net.remotes.get(hit.from);
+    if(hit.kind==='loot'){
+      // Recipient gets a one-time death-loot notification; must be generated by victim.
+      // Sender is authenticated by RTDB hit write rules but the balance is not server verified.
+      const reward=hit.coins;
+      if(source&&Number.isSafeInteger(reward)&&reward>0&&reward<=1000000){
+        state.coins=Math.min(1000000000,Math.floor(finite(state.coins))+reward);
+        notify('🏆 You defeated '+String(hit.name||'an opponent').slice(0,24)+'! +'+reward+' coins.',5);
+        save();
+      }
+      return;
+    }
+    if(!source||source.data.arena||finite(source.data.hp)<=0||finite(source.data.safeUntil)>netNow())return;
+    // Receiver-side sanity checks reduce stale/long-distance hits. This is still
+    // casual client-side PvP, not an authoritative anti-cheat server.
+    const maxReach=Math.max(2.1,1.45*growth(source.data.scale)+.48*growth(state.scale))+1.5;
+    if(hit.kind==='pet'){
+      // Verify against the sender's last published pet location, not the huge owner's altitude.
+      const remotePet=Object.values(source.data.petState||{}).find(p=>String(p.id)===String(hit.attackerPetId));
+      if(!remotePet||finite(remotePet.hp)<=0)return;
+      if(dist(state.x,state.z,finite(remotePet.x),finite(remotePet.z))>3.7)return;
+      if(Math.abs(localHeight()-finite(remotePet.y))>4.5)return;
+      if(!clearAttackPath(state.x,state.z,finite(remotePet.x),finite(remotePet.z),Math.min(localHeight(),finite(remotePet.y))))return;
+    }else{
+      if(dist(state.x,state.z,source.data.x,source.data.z)>maxReach)return;
+      if(Math.abs(localHeight()-finite(source.data.y))>1.3+.5*(growth(state.scale)+growth(source.data.scale)))return;
+      if(!clearAttackPath(state.x,state.z,source.data.x,source.data.z,Math.min(localHeight(),finite(source.data.y))))return;
+    }
+    const damage=Math.round(hit.damage);
+    if(hit.targetPetId!==undefined){
+      const pet=petModels.find(p=>String(p.id)===String(hit.targetPetId));if(!pet||pet.hp<=0)return;
+      pet.hp=Math.max(0,pet.hp-damage);markCombat();if(pet.hp<=0){pet.respawnAt=Date.now()+30000;pet.o.visible=false}
+      notify(String(hit.name||'Player').slice(0,24)+' hit your pet for '+damage+'!',2);
+    }else{
+      state.hp=Math.max(0,state.hp-damage);markCombat();notify(String(hit.name||'Player').slice(0,24)+' hit you for '+damage+' HP!',2);
+      if(state.hp<=0){pvpDefeat(hit.from);return}
+    }
+    net.pvpOpponent=hit.from;net.pvpUntil=netNow()+12000;netSend();
+  }finally{snap.ref.remove().catch(error=>console.warn('Hit cleanup failed',error))}
+}
+function netStrike(){
+  if(!net.connected||currentFight)return false;
+  if(finite(state.safeUntil)>netNow()){notify('Spawn protection: you cannot attack for another '+Math.ceil((state.safeUntil-netNow())/1000)+' seconds.',2);return true}
+  net.attackId++;netSend();
+  let target=null,best=Infinity;
+  for(const [uid,a] of net.remotes){const distance=dist(state.x,state.z,a.data.x,a.data.z);if(distance<best&&netTargetInReach(a.data)){best=distance;target={uid,a}}}
+  if(!target){
+    let nearby=null,nearestDistance=Infinity;
+    for(const a of net.remotes.values()){
+      const d=a.data,range=Math.max(3.8,1.45*growth(state.scale)+.48*growth(d.scale)+1.3);
+      const gap=dist(state.x,state.z,d.x,d.z);
+      if(!d.arena&&finite(d.hp)>0&&gap<range&&gap<nearestDistance){nearestDistance=gap;nearby=d}
+    }
+    if(nearby){notify('Move closer or face '+String(nearby.name||'the other player').slice(0,24)+' to hit them.',2);return true}
+    return false;
+  }
+  const damage=Math.min(30,7+state.molts*5);net.pvpOpponent=target.uid;net.pvpUntil=netNow()+12000;
+  netSendHit(target.uid,damage,{kind:'strike'}).then(sent=>{if(sent)notify('Strike sent to '+target.a.data.name+' ('+damage+' damage).',2)});
+  return true; // Do not overwrite a PvP hit with the wildlife "Strike missed" message.
+}
+function netTick(dt){
+  if(!net.connected)return;net.sendClock+=dt;if(net.sendClock>.14){net.sendClock=0;netSend()}
+  for(const [uid,a] of net.remotes){
+    if(netNow()-a.last>20000){netRemove(uid);continue}
+    const d=a.data,blend=Math.min(1,dt*10),beforeX=a.g.position.x,beforeZ=a.g.position.z;
+    a.g.visible=!currentFight&&finite(d.hp)>0;
+    a.g.position.x+=(d.x-a.g.position.x)*blend;a.g.position.y+=(finite(d.y)-a.g.position.y)*blend;a.g.position.z+=(d.z-a.g.position.z)*blend;
+    const delta=finite(d.heading)-a.g.rotation.y;a.g.rotation.y+=Math.atan2(Math.sin(delta),Math.cos(delta))*blend;
+    const visualScale=growth(d.scale)*BABY_SIZE;a.avatar.scale.setScalar(visualScale);
+    a.avatar.rotation.x=finite(d.tilt);a.avatar.rotation.z=finite(d.roll);animateWings(a.remoteWings,!!d.flying,finite(d.molts),performance.now()*.001,dt);a.g.userData.bodyHeight=visualScale*3.65;
+    const moving=dist(beforeX,beforeZ,a.g.position.x,a.g.position.z)>.002;
+    a.walk+=dt*(moving?11:1);a.attackClock=Math.max(0,a.attackClock-dt);
+    for(const leg of a.remoteLegs){leg.pivot.rotation.x=moving?Math.sin(a.walk+leg.i*2.2+leg.s*2)*.48:Math.sin(a.walk*.5+leg.i)*.03;leg.pivot.rotation.y=Math.max(-.25,Math.min(.25,delta))*leg.s}
+    a.remoteArms.forEach((arm,i)=>{arm.rotation.x=a.attackClock>0?-.95*Math.sin((1.15-a.attackClock)/1.15*Math.PI):Math.sin(a.walk*.25+i)*.07});
+    for(const material of a.ownedMaterials)if(material.emissive)material.emissive.setHex(performance.now()<a.flashUntil?0x6b1515:0x000000);
+    updateRemoteLabel(a);
+    const states=remotePets(d);
+    a.pets.forEach((pet,i)=>{
+      const p=states[i];pet.visible=!currentFight&&finite(d.hp)>0&&(p?finite(p.hp)>0:i<Math.min(4,finite(d.pets)));
+      if(p){pet.position.set(finite(p.x,d.x),finite(p.y,.12),finite(p.z,d.z));pet.rotation.y=finite(p.heading)}
+      else{const t=performance.now()*.001;pet.position.set(d.x+Math.cos(t*.8+i*2.4)*(1.2+i*.4),.12,d.z+Math.sin(t*.8+i*2.4)*(1.2+i*.4))}
+    });
+  }
+  // Companions assist a player after an attack, not every passing stranger.
+  net.petAttackClock+=dt;
+  if(net.petAttackClock>=1.6&&!currentFight&&net.pvpUntil>netNow()&&finite(state.safeUntil)<=netNow()){
+    net.petAttackClock=0;const target=net.remotes.get(net.pvpOpponent);
+    const living=petModels.filter(p=>p.hp>0&&p.hunger>0&&p.energy>3);
+    if(target&&living.length&&finite(target.data.hp)>0&&finite(target.data.safeUntil)<=netNow()&&dist(state.x,state.z,target.data.x,target.data.z)<8&&
+       Math.abs(localHeight()-finite(target.data.y))<2&&clearAttackPath(state.x,state.z,target.data.x,target.data.z,Math.min(localHeight(),finite(target.data.y)))){
+      const opponents=remotePets(target.data).filter(p=>finite(p.hp)>0);
+      const petTarget=opponents[0],damage=Math.min(30,living.reduce((sum,p)=>sum+Math.round(4*p.power),0));
+      living.forEach(p=>{p.energy=Math.max(0,p.energy-3);p.attack=.5});markCombat();net.pvpUntil=netNow()+12000;
+      const extra={kind:'pet'};if(petTarget)extra.targetPetId=petTarget.id;
+      netSendHit(net.pvpOpponent,damage,extra).then(sent=>{if(sent)notify(petTarget?'Your pets struck an opposing pet!':'Your pets struck '+target.data.name+'!',1.5)});
+    }
+  }
+  $('onlineCount').textContent=net.remotes.size+' other players online';
+}
+$('onlineSettings').onclick=()=>{
+  $('firebaseConfig').value=JSON.stringify(window.MANTIS_FIREBASE_CONFIG||JSON.parse(localStorage.getItem('mantis_firebase_config')||'{}'),null,2);
+  $('onlineError').textContent='';$('onlineSetup').style.display='grid';
+};
+$('onlineClose').onclick=()=>{$('onlineSetup').style.display='none'};
+$('onlineSave').onclick=async()=>{
+  try{const config=cleanFirebaseConfig($('firebaseConfig').value);localStorage.setItem('mantis_firebase_config',JSON.stringify(config));
+    window.MANTIS_FIREBASE_CONFIG=config;$('onlineSetup').style.display='none';await netDisconnect();
+    if(window.firebase&&firebase.apps.length&&firebase.app().options.projectId!==config.projectId){await firebase.app().delete()}
+    await netConnect();
+  }catch(error){$('onlineError').textContent=error.message}
+};
+$('onlineToggle').onclick=()=>net.connected?netDisconnect():netConnect();
+
+// A recovery button must clear climbing/input state as well as change coordinates.
+function safeLanding(x,z,scale=1){
+  const radius=collisionRadius()+.14;
+  // Try nearby rings around the tree/twig, avoiding its trunk AND buildings.
+  for(let ring=0;ring<=16;ring++){
+    const distance=ring*.8;
+    for(let step=0;step<24;step++){
+      const angle=step*Math.PI/12;
+      const px=x+Math.cos(angle)*distance,pz=z+Math.sin(angle)*distance;
+      if(!blocked(px,pz,radius))return {x:px,z:pz};
+    }
+  }
+  return safeSpawn(); // Never leave the player trapped after descent.
+}
+function safeSpawn(){
+  // Fixed collision footprint for rescue: never scale the search radius with an
+  // arbitrarily large mantis. Search a wide region close to the home point.
+  const rescueRadius=collisionRadius()+.3;
+  for(let ring=0;ring<=80;ring++){
+    const count=ring===0?1:Math.max(24,Math.ceil(ring*10));
+    for(let i=0;i<count;i++){
+      const angle=2*Math.PI*i/count;
+      const x=Math.cos(angle)*ring*1.5,z=Math.sin(angle)*ring*1.5;
+      if(!blocked(x,z,rescueRadius))return {x,z};
+    }
+  }
+  // Failsafe never returns the former stuck position, even if the map is full.
+  return {x:0,z:0};
+}
+function resetAllProgressOnDeath(){
+ // A defeat removes all character progression, pets, inventory and coins.
+ // Keep only account identity so the multiplayer session and save slot remain usable.
+ const user=state.username,display=state.displayName;
+ Object.assign(state,{username:user,displayName:display,x:0,z:0,heading:0,hp:100,hunger:78,energy:100,maxHP:100,
+  molts:0,elapsed:0,moltAt:300,scale:1,kills:0,arenaWins:[],feed:0,quest:0,coins:0,pets:[],petInventory:[],mentorStep:0,
+  climb:null,climbProgress:0,molting:0,attack:0,stun:0,soft:0,walk:0,lastCombatAt:0,regenClock:0});
+ syncPets();
+}
+function pvpDefeat(killerUid){
+ if(!active||state.hp>0)return;
+ const loot=Math.max(0,Math.min(1000000,Math.floor(finite(state.coins))));
+ // A victim sends their last coin balance to the victor, then loses everything.
+ // This is client-authoritative and needs server rules/functions for anti-cheat.
+ if(killerUid&&net.connected&&loot>0){netSendHit(killerUid,1,{kind:'loot',coins:loot}).catch(()=>{});}
+ returnToSpawn('defeat');
+}
+function returnToSpawn(reason='button'){if(rewardAdIsBlocking())return;
+ if(!active)return;const withdrew=!!currentFight;if(currentFight)endArena(false);if(reason==='defeat')resetAllProgressOnDeath();
+ const position=safeSpawn();document.activeElement?.blur?.();clearMovementInput();resetFlight();surfaceY=0;
+ state.rescueLockUntil=performance.now()+350;state.x=position.x;state.z=position.z;state.heading=0;state.climb=null;state.climbProgress=0;
+ state.lastSpawn={x:position.x,z:position.z};state.molting=0;state.attack=0;state.stun=0;state.energy=Math.max(10,state.energy);
+ state.warpAt=netNow();state.safeUntil=netNow()+3000;state.soft=Math.max(0,state.soft);net.pvpUntil=0;net.pvpOpponent=null;
+ if(reason==='defeat'){markCombat();state.hp=100;state.hunger=78;state.energy=100}
+ arenaCharge=null;for(const arena of arenas)arena.charge=0;setBattleView(false);$('fight').style.display='none';camYaw=0;
+ mantis.position.set(state.x,0,state.z);mantis.rotation.set(0,0,0);mantis.scale.setScalar(state.scale*BABY_SIZE);
+ mage.position.set(state.x+2,0,state.z+2);petModels.forEach((p,i)=>{p.o.position.set(state.x+(i-1.5)*.7,.12,state.z+1.4);p.o.visible=p.hp>0});
+ updateCamera(0,true);renderer.render(scene,camera);save();netSend();
+ notify(withdrew?'Arena withdrawn: molts reset. Returned to spawn.':reason==='defeat'?'Defeated! All progress, coins and pets lost. Starting again.':'Back at spawn. Movement restored and progress kept.',5);
+}
+$('goSpawn').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();lastRescuePointer=performance.now();$('goSpawn').setPointerCapture(e.pointerId);returnToSpawn('button')});
+for(const event of ['pointerup','pointercancel'])$('goSpawn').addEventListener(event,()=>lastRescuePointer=performance.now());
+$('goSpawn').onclick=e=>{if(performance.now()-lastRescuePointer>700)returnToSpawn('button')};
+$('goSpawn').addEventListener('keydown',e=>{if((e.key==='Enter'||e.code==='Space')&&!e.repeat){e.preventDefault();e.stopPropagation();lastRescuePointer=performance.now();returnToSpawn('button')}});
+const flyButton=document.createElement('button');flyButton.id='fly';flyButton.textContent='FLY · molt 7';flyButton.onclick=toggleFlight;$('actions').appendChild(flyButton);
+for(const [id,key,label] of [['flyUp','q','↑ RISE'],['flyDown','c','↓ DESCEND']]){
+ const b=document.createElement('button');b.id=id;b.dataset.key=key;b.textContent=label;$('actions').appendChild(b);
+ b.addEventListener('pointerdown',e=>{if(!active||rewardAdIsBlocking()||touchUiBlocksMovement()||!flight.active)return;e.preventDefault();keys[key]=true;b._pointerId=e.pointerId;b.setPointerCapture(e.pointerId)});
+ for(const type of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(type,()=>{keys[key]=false;b._pointerId=undefined});
+}
+
+// Put side panels in one scrollable rail; the new action cannot overlap them.
+const rightRail=document.createElement('div');rightRail.id='rightRail';document.body.appendChild(rightRail);
+for(const id of ['save','petInfo','petsOpen','petStats','fight','onlinePanel'])rightRail.appendChild($(id));
+function fitActionRail(){rightRail.style.bottom=($('actions').getBoundingClientRect().height+28)+'px'}
+if(window.ResizeObserver)new ResizeObserver(fitActionRail).observe($('actions'));
+window.addEventListener('resize',fitActionRail);fitActionRail();
+
+function tick(dt){updateTouchControls();updateRewardButtons();if(!active||rewardAdIsBlocking())return;
+if(touchUiBlocksMovement())clearMovementInput();
+$('goSpawn').disabled=false;
+if(document.activeElement===$('chatInput'))clearMovementInput();
+state.elapsed+=dt;autosave+=dt;if(autosave>12){save();autosave=0}state.attack=Math.max(0,state.attack-dt);state.soft=Math.max(0,state.soft-dt);
+if(state.molting>0){state.molting-=dt;if(state.molting<=0)finishMolt()}
+let forward=(keys.ArrowUp||keys.w?1:0)-(keys.ArrowDown||keys.s?1:0),turn=(keys.ArrowLeft||keys.a?1:0)-(keys.ArrowRight||keys.d?1:0);
+const strength=Math.min(1,Math.hypot(joystickInput.x,joystickInput.y));
+if(joystickInput.active&&strength>.01){if(!stickWasActive)stickReferenceYaw=cameraHeading+camYaw;stickWasActive=true;const desired=stickReferenceYaw-Math.atan2(joystickInput.x,-joystickInput.y);turn=clamp(angleDelta(desired,state.heading)*2.1,-1,1);forward=strength}else stickWasActive=false;
+const rescueLocked=performance.now()<(state.rescueLockUntil||0),canMove=!rescueLocked&&state.stun<=0&&state.molting<=0;
+let moving=canMove&&(forward!==0||flight.active&&Math.hypot(flight.vx,flight.vz)>.2);
+if(!canMove){forward=0;turn=0}
+if(rescueLocked){state.climb=null;state.climbProgress=0;resetFlight();surfaceY=0}
+else if(flight.active)updateFlight(dt,forward,turn);
+else{
+ if(canMove)state.heading+=turn*dt*2.15;
+ if(state.climb){const c=state.climb;state.climbProgress=clamp(state.climbProgress+(c.descending?-1:1)*dt*.32,0,1);const t=state.climbProgress;
+  const path=t<.25?0:t<.75?(t-.25)/.5:1,bx=c.baseX,bz=c.baseZ,tx=c.branchX,tz=c.branchZ;
+  state.x+=(bx+(tx-bx)*path-state.x)*Math.min(1,dt*5);state.z+=(bz+(tz-bz)*path-state.z)*Math.min(1,dt*5);
+  if(c.descending&&t<=0){const landing=safeLanding(bx,bz);state.x=landing.x;state.z=landing.z;state.climb=null;state.climbProgress=0;state.stun=0;surfaceY=0;clearMovementInput();notify('Landed in a clear spot.',2)}
+ }else if(moving){const speed=walkSpeed();moveBody(-Math.sin(state.heading)*forward*speed*dt,-Math.cos(state.heading)*forward*speed*dt,surfaceY);
+  if(surfaceY>0&&supportHeight(state.x,state.z,surfaceY+.1)<surfaceY-.3){flight.active=true;flight.alt=surfaceY;flight.mode='landing';surfaceY=0}
+ }
+}
+if(moving){state.energy=Math.max(0,state.energy-dt*(100/600));if(state.energy<=0&&state.stun<=0){state.stun=120;notify('EXHAUSTED! Resting for 2 minutes.',5)}}else if(state.stun<=0)state.energy=Math.min(100,state.energy+dt*.33);if(state.stun>0){state.stun=Math.max(0,state.stun-dt);if(state.stun===0)state.energy=35}state.hunger=Math.max(0,state.hunger-dt*.025);if(state.hunger===0)state.hp-=dt*.8;if(state.hp<=0&&currentFight){endArena(false)}if(state.hp<=0&&!currentFight)returnToSpawn('defeat');state.walk+=dt*(moving?11:1);mantis.scale.setScalar(state.scale*BABY_SIZE);const climbY=localHeight();mantis.position.set(state.x,climbY,state.z);const labelPos=new T.Vector3(state.x,climbY+Math.max(.7,state.scale*.5),state.z).project(camera);const label=$('nameTag');label.style.display=labelPos.z<1?'block':'none';label.style.left=((labelPos.x+1)*innerWidth/2)+'px';label.style.top=((-labelPos.y+1)*innerHeight/2)+'px';label.textContent=state.displayName||state.username;mantis.rotation.set(flight.active?flight.pitch:state.climb?Math.PI*Math.max(0,(state.climbProgress-.78)/.22):0,state.heading,flight.active?flight.bank:0);animateWings(flightWings,flight.active,state.molts,state.elapsed,dt);if(state.molting>0){mantis.rotation.z=Math.sin(state.molting*12)*.08;mantis.scale.setScalar(state.scale*BABY_SIZE*(1+.05*Math.sin(state.molting*10)))}for(const l of legs){l.pivot.rotation.x=moving?Math.sin(state.walk+l.i*2.2+l.s*2)*.48:Math.sin(state.walk*.5+l.i)*.03;l.pivot.rotation.y=turn*l.s*.25}for(let i=0;i<arms.length;i++)arms[i].rotation.x=state.attack>0?-.95*Math.sin((1.15-state.attack)/1.15*Math.PI):Math.sin(state.walk*.25+i)*.07;for(const a of arenas){if(state.arenaWins.includes(a.i)){a.holo.visible=false;continue}a.holo.rotation.y+=dt*.65;if(!currentFight&&!flight.active&&localHeight()<.2&&dist(state.x,state.z,a.x,a.z)<3.4){a.charge+=dt;if(a.charge>=5){a.charge=0;startArena(a)}else if(Math.floor(a.charge*2)!==Math.floor((a.charge-dt)*2))notify('Arena #'+(a.i+1)+' — stay inside '+(5-a.charge).toFixed(1)+'s',1)}else a.charge=0}updateAI(dt);updateCompanions(dt);netTick(dt);if(state.hunger>0)recoverHealth(dt);if(Math.floor(state.elapsed)%2===0&&Math.floor((state.elapsed-dt))%2!==0)updateMentor();if(performance.now()>toastUntil){$('message').textContent=state.molts>=MAX_MOLTS?'Maximum molt 10 reached. Explore, fly and challenge masters!':state.elapsed>=state.moltAt?'⚠ GET READY TO MOLT! Climb a tree or twig, then press M.':state.stun>0?'Exhausted: '+formatTime(state.stun)+' until movement returns.':'Explore, hunt, and find glowing arena circles.'}updateCamera(dt);$('fly').disabled=state.molts<FLIGHT_MOLT||!!currentFight||state.molting>0;$('fly').textContent=state.molts<FLIGHT_MOLT?'FLY · molt 7':flight.active?(flight.mode==='landing'?'CANCEL LANDING':'LAND'):'FLY';$('flyUp').disabled=!flight.active;$('flyDown').disabled=!flight.active;$('flyUp').hidden=!flight.active;$('flyDown').hidden=!flight.active;$('molt').disabled=state.molts>=MAX_MOLTS;$('hpbar').style.width=Math.max(0,100*state.hp/state.maxHP)+'%';$('hungerbar').style.width=state.hunger+'%';$('energybar').style.width=state.energy+'%';$('hptext').textContent=Math.ceil(state.hp);$('hungertext').textContent=Math.ceil(state.hunger);$('energytext').textContent=Math.ceil(state.energy);if(Math.floor(state.elapsed*5)!==Math.floor((state.elapsed-dt)*5)){const pbox=$('petStats');pbox.replaceChildren();const title=document.createElement('b');title.textContent='⚔ Damage '+Math.round(7+state.molts*5)+' · 🐾 Pets';pbox.appendChild(title);for(const p of petModels){const record=petRecord(p.id);const line=document.createElement('div');line.textContent=(record?.name||'Pet')+' · '+(record?.rarity||'Common')+' · DMG '+Math.round(4*p.power)+(p.hp<=0?' · Respawn '+Math.max(0,Math.ceil((p.respawnAt-Date.now())/1000))+'s':'');pbox.appendChild(line);for(const [name,val,color] of [['HP',100*p.hp/p.maxHP,'#eb7777'],['Hunger',p.hunger??100,'#f5bf67'],['Energy',p.energy??100,'#8dd1f2']]){const caption=document.createElement('span');caption.textContent=name+' '+Math.round(val)+'%';pbox.appendChild(caption);const meter=document.createElement('div');meter.className='meter';const fill=document.createElement('i');fill.style.width=Math.max(0,Math.min(100,val))+'%';fill.style.background=color;meter.appendChild(fill);pbox.appendChild(meter)}}} $('stats').innerHTML='@'+state.displayName+' · 🪙 '+Math.floor(state.coins)+' · Molts '+state.molts+'/10'+'<br>Size ×'+state.scale.toFixed(2)+' · Prey '+state.kills+'<br>Masters '+state.arenaWins.length+'/100'+(state.soft>0?'<br>⚠ Soft shell '+Math.ceil(state.soft)+'s':'');$('coords').textContent='Local '+Math.round(state.x)+', '+Math.round(state.z);$('moltClock').textContent=state.molts>=MAX_MOLTS?'Maximum: 10 / 10 molts':state.elapsed>=state.moltAt?'⚠ MOLT READY — climb to molt':'Next molt: '+formatTime(state.moltAt-state.elapsed);$('quest').textContent=state.kills<3?'Hunt 3 insects ('+state.kills+'/3)':state.arenaWins.length<1?'Win arena #1 (near spawn)':state.molts<1?'Survive until your first molt':state.arenaWins.length<100?'Defeat masters ('+state.arenaWins.length+'/100)':'All masters defeated! Keep growing!'}
+// Optional Google Ad Manager rewarded ads. No sample ads or timer-based rewards.
+// This module lives inside the game IIFE so it can save the correct account.
+const rewardConfig = window.MANTIS_REWARDED_ADS || {};
+const rewardSlots = new Map();
+let rewardCurrent = null, rewardSerial = 0, rewardGptPromise = null, rewardService = null;
+let rewardConsent = {ready:false, allowed:false, listening:false, waiters:[]};
+const rewardInert = new Map();
+const rewardDefinitions = Object.freeze({
+  coins:Object.freeze({title:'Earn 50 coins',label:'+50 coins',icon:'🪙'}),
+  molt:Object.freeze({title:'Shorten your molt wait',label:'Molt −3:00',icon:'🦗'})
+});
+
+function rewardAdIsBlocking(){return rewardCurrent !== null;}
+function validRewardConfig(kind){
+  return rewardConfig.enabled === true && rewardConfig.publisherReady === true &&
+    /^\/\d+\/[A-Za-z0-9_\/-]+$/.test(rewardConfig.adUnits?.[kind] || '') &&
+    ['CHILD','TEEN','UNSPECIFIED'].includes(rewardConfig.ageTreatment) &&
+    /^https:\/\//.test(rewardConfig.privacyPolicyUrl || '');
+}
+function rewardUnavailableReason(kind){
+  if(!active)return 'Sign in to play first.';
+  if(currentFight)return 'Finish your arena battle before viewing an ad.';
+  if(state.molting>0)return 'Finish molting before viewing an ad.';
+  if(state.climb||flight.active)return 'Land safely before viewing an ad.';
+  if(state.attack>0||state.elapsed-(state.lastCombatAt??-100)<7||net.pvpUntil>netNow())
+    return 'Reach a safe moment: wait seven seconds after combat before viewing an ad.';
+  if(net.joining)return 'Wait for the world connection to finish.';
+  if(kind==='molt' && state.molts>=MAX_MOLTS)return 'You have reached the maximum of ten molts.';
+  if(kind==='molt' && state.elapsed>=state.moltAt)return 'Your molt is already ready. Climb a branch or tree to molt.';
+  return '';
+}
+function updateRewardButtons(){
+  const bar=$('rewardButtons');bar.hidden=!active;
+  $('walletBalance').textContent=Math.max(0,Math.floor(Number(state.coins)||0))+' coins';
+  const capped=state.molts>=MAX_MOLTS, ready=state.elapsed>=state.moltAt;
+  $('rewardMolt').disabled=!!rewardCurrent||capped||ready;
+  $('rewardMolt').querySelector('small').textContent=capped?'Maximum 10 molts':ready?'Molt is ready':'Optional reward';
+  $('rewardCoins').disabled=!!rewardCurrent;
+}
+function setRewardStatus(message){$('rewardStatus').textContent=message;}
+function setRewardGameInert(value){
+  for(const id of ['hud','objective','rightRail','controls','actions','chatDock','mentorShow','mentorPanel','gameTools','rewardButtons','adPrivacy']){
+    const el=$(id);if(!el)continue;
+    if(value){if(!rewardInert.has(el))rewardInert.set(el,el.inert);el.inert=true;}
+  }
+  if(!value){for(const [el,wasInert] of rewardInert)el.inert=wasInert;rewardInert.clear();}
+  document.body.classList.toggle('reward-modal-open',value);
+}
+function rewardDialogVisible(visible){
+  $('rewardModal').hidden=!visible;
+  if(visible)requestAnimationFrame(()=>{if(!$('rewardModal').hidden)$('rewardDialog').focus({preventScroll:true});});
+}
+function cleanupRewardSlot(attempt){
+  clearTimeout(attempt.timer);clearTimeout(attempt.presentationTimer);attempt.timer=null;attempt.presentationTimer=null;
+  if(attempt.slot&&!attempt.destroyed){
+    attempt.destroyed=true;
+    try{window.googletag?.destroySlots([attempt.slot]);}catch(_){/* Never turn cleanup into a reward. */}
+  }
+  if(attempt.displayed)attempt.closed=true;
+  if(attempt.cancelled&&attempt.slot)rewardSlots.delete(attempt.slot);
+}
+function resumeAfterReward(attempt){
+  if(rewardCurrent!==attempt)return;
+  rewardCurrent=null;rewardDialogVisible(false);setRewardGameInert(false);clearMovementInput();
+  updateRewardButtons();
+  if(attempt.wasConnected&&active&&state.username.toLowerCase()===attempt.userKey){
+    netConnect();
+  }
+  const previous=attempt.returnFocus;
+  if(previous?.isConnected&&typeof previous.focus==='function')previous.focus({preventScroll:true});
+}
+function cancelReward(){
+  const a=rewardCurrent;if(!a||a.phase==='playing')return;
+  if(!a.displayed)a.cancelled=true;
+  cleanupRewardSlot(a);resumeAfterReward(a);
+}
+function rewardFailure(a,message){
+  if(a.cancelled||rewardCurrent!==a)return;
+  a.cancelled=true;a.phase='unavailable';cleanupRewardSlot(a);
+  $('rewardWatch').hidden=true;$('rewardCancel').textContent='Keep playing';
+  rewardDialogVisible(true);setRewardStatus(message);
+}
+
+// A positive TCF decision is required even when requesting non-personalized ads.
+// This is an intentionally conservative gate, not a replacement for the CMP or
+// Google's own processing of its TCF consent string and publisher restrictions.
+function consentAllowsRewardedAds(tc,success){
+  if(!success||!tc||tc.cmpStatus!=='loaded'||!['tcloaded','useractioncomplete'].includes(tc.eventStatus))return false;
+  if(!tc.tcString||tc.purpose?.consents?.[1]!==true||tc.vendor?.consents?.[755]!==true||tc.vendor?.disclosedVendors?.[755]!==true)return false;
+  for(const purpose of [2,7,9,10]){
+    const restriction=tc.publisher?.restrictions?.[purpose]?.[755];
+    if(restriction===0)return false;
+    const basis=restriction===1?
+      tc.purpose?.consents?.[purpose]===true&&tc.vendor?.consents?.[755]===true:
+      tc.purpose?.legitimateInterests?.[purpose]===true&&tc.vendor?.legitimateInterests?.[755]===true;
+    if(!basis)return false;
+  }
+  return true;
+}
+function ensureRewardConsent(){
+  return new Promise((resolve,reject)=>{
+    if(typeof window.__tcfapi!=='function'){
+      reject(Error('Ad privacy choices are not available yet. You can keep playing without ads.'));return;
+    }
+    const waiter={finish:null};
+    const timeout=setTimeout(()=>waiter.finish(false,'Ad privacy choices could not be loaded. No ad was requested.'),12000);
+    waiter.finish=(allowed,message)=>{
+      clearTimeout(timeout);rewardConsent.waiters=rewardConsent.waiters.filter(w=>w!==waiter);
+      allowed?resolve():reject(Error(message||'Ad permission has not been given. You can use Ad privacy choices or keep playing without ads.'));
+    };
+    rewardConsent.waiters.push(waiter);
+    if(rewardConsent.ready){waiter.finish(rewardConsent.allowed);return;}
+    if(rewardConsent.listening)return;
+    rewardConsent.listening=true;
+    try{
+      window.__tcfapi('addEventListener',2,(tc,success)=>{
+        if(success&&tc&&tc.cmpStatus==='loaded'&&!['tcloaded','useractioncomplete'].includes(tc.eventStatus))return;
+        rewardConsent.ready=!!success&&tc?.cmpStatus==='loaded';
+        rewardConsent.allowed=consentAllowsRewardedAds(tc,success);
+        if(rewardConsent.ready||!success){
+          for(const item of [...rewardConsent.waiters])item.finish(rewardConsent.allowed);
+        }
+        if(rewardConsent.ready&&!rewardConsent.allowed&&rewardCurrent&&['loading','ready','playing'].includes(rewardCurrent.phase)){
+          const a=rewardCurrent;
+          if(a.granted){a.phase='result';cleanupRewardSlot(a);$('rewardWatch').hidden=true;$('rewardCancel').textContent='Return to game';rewardDialogVisible(true);setRewardStatus(rewardResultMessage(a)+' Ad privacy choices have changed.');}
+          else rewardFailure(a,'Ad permission was withdrawn. The ad has stopped; no reward was confirmed.');
+        }
+      });
+    }catch(_){rewardConsent.listening=false;for(const item of [...rewardConsent.waiters])item.finish(false,'Ad privacy choices could not be loaded.');}
+  });
+}
+function openRewardPrivacy(){
+  const a=rewardCurrent;
+  if(a&&a.phase==='playing')return;
+  if(a){a.cancelled=!a.displayed;cleanupRewardSlot(a);resumeAfterReward(a);}
+  rewardConsent.allowed=false;rewardConsent.ready=false;
+  if(typeof window.MANTIS_OPEN_AD_PRIVACY==='function'){
+    try{window.MANTIS_OPEN_AD_PRIVACY();return;}catch(_){/* Use the configured Google CMP below. */}
+  }
+  if(window.googlefc&&typeof window.googlefc.showRevocationMessage==='function'){
+    try{window.googlefc.showRevocationMessage();return;}catch(_){/* Remain available for normal play. */}
+  }
+  notify('Ad privacy choices have not been connected yet. No ad will be requested.',5);
+}
+
+function loadRewardGPT(){
+  if(window.googletag?.apiReady)return Promise.resolve(window.googletag);
+  if(rewardGptPromise)return rewardGptPromise;
+  rewardGptPromise=new Promise((resolve,reject)=>{
+    window.googletag=window.googletag||{cmd:[]};
+    let settled=false;
+    const fail=()=>{if(settled)return;settled=true;clearTimeout(timeout);reject(Error('The ad service did not load. It may be blocked or unavailable. No reward was used.'));};
+    const timeout=setTimeout(fail,15000);
+    const ready=()=>{
+      if(settled)return;settled=true;clearTimeout(timeout);resolve(window.googletag);
+    };
+    window.googletag.cmd.push(ready);
+    let script=document.getElementById('mantisGpt');
+    if(!script){
+      script=document.createElement('script');script.id='mantisGpt';script.async=true;
+      script.src='https://securepubads.g.doubleclick.net/tag/js/gpt.js';script.crossOrigin='anonymous';
+      script.onerror=fail;document.head.appendChild(script);
+    }else script.addEventListener('error',fail,{once:true});
+  }).catch(error=>{rewardGptPromise=null;document.getElementById('mantisGpt')?.remove();throw error;});
+  return rewardGptPromise;
+}
+
+// Only the provider's matching rewardedSlotGranted event reaches this function.
+// The account and benefit were fixed BEFORE requesting the ad. Never trust a
+// caller-supplied amount, a countdown, video-completed, close, or ad click event.
+function creditVerifiedReward(a){
+  if(!a.displayed||a.cancelled||a.granted)return false;
+  a.granted=true; // Set BEFORE mutation: repeated callbacks cannot double-pay.
+  const current=state.username.toLowerCase()===a.userKey;
+  let account=state;
+  if(!current){
+    try{account=JSON.parse(localStorage.getItem('mantis_france_v2_'+a.userKey)||'null');}catch(_){account=null;}
+    if(!account){a.creditError=true;return false;}
+  }
+  if(a.kind==='coins'){
+    account.coins=Math.max(0,Number(account.coins)||0)+50;
+    a.result='Reward earned: +50 coins!';
+  }else{
+    const elapsed=Math.max(0,Number(account.elapsed)||0),until=Number(account.moltAt)||elapsed;
+    const reduction=Math.min(180,Math.max(0,until-elapsed));
+    account.moltAt=Math.max(elapsed,until-reduction);
+    a.result=account.moltAt<=elapsed?'Your next molt is ready! Climb a branch or tree to molt.':'Reward earned: three minutes removed from your next molt wait.';
+  }
+  if(current){if(save()===false)a.creditError=true;updateRewardButtons();}
+  else{
+    try{localStorage.setItem('mantis_france_v2_'+a.userKey,JSON.stringify(account));}
+    catch(_){a.creditError=true;}
+  }
+  if(rewardCurrent===a){setRewardStatus(rewardResultMessage(a));}
+  else if(current)notify(rewardResultMessage(a),5);
+  return true;
+}
+function rewardResultMessage(a){
+  if(a.creditError)return 'The ad completed, but browser storage could not save the reward. Keep this page open; do not switch usernames or clear your browser data.';
+  return a.result||'Your reward was saved.';
+}
+function installRewardEvents(gpt){
+  const service=gpt.pubads();if(rewardService===service)return;rewardService=service;
+  service.addEventListener('rewardedSlotReady',event=>{
+    const a=rewardSlots.get(event.slot);
+    if(!a||a!==rewardCurrent||a.cancelled||a.phase!=='loading')return;
+    clearTimeout(a.timer);a.timer=null;a.phase='ready';a.readyEvent=event;
+    setRewardStatus('The ad is ready. Choose Watch ad to receive this reward after completion.');
+    $('rewardWatch').textContent=a.kind==='coins'?'Watch ad · +50 coins':'Watch ad · shorten molt wait';
+    $('rewardWatch').hidden=false;$('rewardWatch').disabled=false;
+  });
+  service.addEventListener('rewardedSlotGranted',event=>{
+    const a=rewardSlots.get(event.slot);if(!a)return;
+    creditVerifiedReward(a);
+  });
+  service.addEventListener('rewardedSlotClosed',event=>{
+    const a=rewardSlots.get(event.slot);if(!a)return;
+    a.closed=true;cleanupRewardSlot(a);
+    if(a!==rewardCurrent||a.cancelled)return;
+    a.phase='result';$('rewardWatch').hidden=true;$('rewardCancel').textContent='Return to game';rewardDialogVisible(true);
+    setRewardStatus(a.granted?rewardResultMessage(a):'Ad closed. No reward has been confirmed.');
+    // Keep the slot record: a queued grant event may legally follow close.
+  });
+  service.addEventListener('slotRenderEnded',event=>{
+    const a=rewardSlots.get(event.slot);
+    if(a&&a===rewardCurrent&&event.isEmpty&&!a.displayed)rewardFailure(a,'No ad is available right now. Try again later; your progress is unchanged.');
+  });
+}
+async function requestReward(kind){
+  if(!rewardDefinitions[kind]||rewardCurrent)return;
+  const unavailable=rewardUnavailableReason(kind);if(unavailable){notify(unavailable,4);return;}
+  const definition=rewardDefinitions[kind];
+  const a={id:++rewardSerial,kind,userKey:state.username.toLowerCase(),phase:'checking',granted:false,displayed:false,cancelled:false,
+    slot:null,wasConnected:net.connected,returnFocus:document.activeElement,startedAt:Date.now()};
+  rewardCurrent=a;clearMovementInput();save();setRewardGameInert(true);updateRewardButtons();
+  $('rewardTitle').textContent=definition.title;$('rewardIcon').textContent=definition.icon;
+  const left=Math.max(0,state.moltAt-state.elapsed);
+  $('rewardDescription').textContent=kind==='coins'?
+    'Complete one optional ad to receive 50 in-game coins. Your game pauses and you rejoin the world afterwards.':
+    'Complete one optional ad to remove up to three minutes from your next molt wait. '+(left<180?'Only '+formatTime(left)+' remains, so this will make the molt ready. ':'')+'You still need to climb and molt normally.';
+  $('rewardWatch').hidden=true;$('rewardCancel').textContent='Keep playing';
+  const policy=$('rewardPolicy');policy.hidden=!/^https:\/\//.test(rewardConfig.privacyPolicyUrl||'');if(!policy.hidden)policy.href=rewardConfig.privacyPolicyUrl;
+  rewardDialogVisible(true);setRewardStatus('Checking ad availability…');
+  // Local presence/listeners detach synchronously. An offline RTDB write must
+  // never trap the player while waiting for a server acknowledgement.
+  if(a.wasConnected)await Promise.race([netDisconnect(),new Promise(resolve=>setTimeout(resolve,2000))]);
+  if(a!==rewardCurrent||a.cancelled)return;
+  if(!validRewardConfig(kind)){rewardFailure(a,'Rewarded ads are not available in this version yet. You can keep playing normally.');return;}
+  try{
+    await ensureRewardConsent();if(a!==rewardCurrent||a.cancelled)return;
+    a.phase='loading';setRewardStatus('Loading an optional ad… You can cancel at any time.');
+    const gpt=await loadRewardGPT();if(a!==rewardCurrent||a.cancelled||!rewardConsent.allowed)return;
+    installRewardEvents(gpt);
+    const age=gpt.enums.TagForAgeTreatment?.[rewardConfig.ageTreatment];
+    if(age===undefined)throw Error('The ad service cannot apply the selected age settings yet. Please try later.');
+    gpt.pubads().setPrivacySettings({nonPersonalizedAds:true,tagForAgeTreatment:age});
+    const slot=gpt.defineOutOfPageSlot(rewardConfig.adUnits[kind],gpt.enums.OutOfPageFormat.REWARDED);
+    if(!slot)throw Error('Rewarded ads are unavailable in this browser or page view. No reward was used.');
+    a.slot=slot;rewardSlots.set(slot,a);slot.addService(gpt.pubads());
+    // Bound retained closed-slot bookkeeping while still tolerating queued grants.
+    if(rewardSlots.size>64){for(const [oldSlot,old] of rewardSlots){if(old!==a&&old.closed){rewardSlots.delete(oldSlot);break;}}}
+    gpt.enableServices();
+    a.timer=setTimeout(()=>rewardFailure(a,'No ad arrived. You can keep playing and try again later.'),20000);
+    gpt.display(slot);
+  }catch(error){rewardFailure(a,error?.message||'The ad is unavailable. No reward was used.');}
+}
+function showReadyReward(){
+  const a=rewardCurrent;if(!a||a.phase!=='ready'||!a.readyEvent||!rewardConsent.allowed||a.cancelled)return;
+  a.phase='playing';a.displayed=true;clearMovementInput();rewardDialogVisible(false);
+  a.presentationTimer=setTimeout(()=>{
+    if(rewardCurrent!==a||a.closed)return;
+    if(a.granted){a.phase='result';cleanupRewardSlot(a);$('rewardWatch').hidden=true;$('rewardCancel').textContent='Return to game';rewardDialogVisible(true);setRewardStatus(rewardResultMessage(a));}
+    else rewardFailure(a,'The ad stopped responding. No reward was confirmed. Return to the game and try later.');
+  },180000);
+  try{
+    if(a.readyEvent.makeRewardedVisible()!==true){a.displayed=false;rewardFailure(a,'The ad could not be displayed. Your progress is unchanged.');}
+  }catch(_){a.displayed=false;rewardFailure(a,'The ad could not start. No reward was used.');}
+}
+$('rewardCoins').onclick=()=>requestReward('coins');
+$('rewardMolt').onclick=()=>requestReward('molt');
+$('rewardWatch').onclick=showReadyReward;
+$('rewardCancel').onclick=cancelReward;
+$('rewardPrivacy').onclick=openRewardPrivacy;
+const adPrivacyButton=document.createElement('button');adPrivacyButton.id='adPrivacy';adPrivacyButton.type='button';adPrivacyButton.textContent='Ad privacy choices';adPrivacyButton.onclick=openRewardPrivacy;rightRail.appendChild(adPrivacyButton);
+window.addEventListener('keydown',event=>{
+  const a=rewardCurrent;if(!a)return;
+  if(event.key==='Escape'&&a.phase!=='playing'){event.preventDefault();cancelReward();return;}
+  if(event.key==='Tab'&&!$('rewardModal').hidden){
+    const controls=[...$('rewardDialog').querySelectorAll('button,a[href]')].filter(el=>!el.hidden&&!el.disabled);
+    const first=controls[0],last=controls[controls.length-1];
+    if(event.shiftKey&&(document.activeElement===first||document.activeElement===$('rewardDialog'))){event.preventDefault();last?.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
+  }
+},true);
+window.addEventListener('pagehide',()=>{if(rewardCurrent&&!rewardCurrent.displayed){rewardCurrent.cancelled=true;cleanupRewardSlot(rewardCurrent);}});
+window.addEventListener('pageshow',event=>{if(event.persisted&&rewardCurrent?.cancelled)resumeAfterReward(rewardCurrent);});
+updateRewardButtons();
+
+// iPhone/iPad thumb stick and compact controls. Runs inside the game IIFE.
+// joystickInput is owned by the movement code; x points right, y points down.
+const touchLayoutQuery = window.matchMedia('(pointer: coarse)');
+const joystickHost = $('controls');
+joystickHost.replaceChildren();
+joystickHost.setAttribute('aria-label', 'Movement joystick');
+const joystickBase = document.createElement('div');
+joystickBase.id = 'joystickBase';
+joystickBase.setAttribute('role', 'group');
+joystickBase.setAttribute('aria-label', 'Drag to move. Release to stop.');
+joystickBase.setAttribute('aria-describedby', 'joystickHint');
+joystickBase.tabIndex = 0;
+const joystickRing = document.createElement('span');
+joystickRing.className = 'joystick-ring';
+const joystickThumb = document.createElement('span');
+joystickThumb.id = 'joystickThumb';
+joystickThumb.setAttribute('aria-hidden', 'true');
+const joystickHint = document.createElement('span');
+joystickHint.id = 'joystickHint';
+joystickHint.textContent = 'DRAG TO MOVE';
+joystickBase.append(joystickRing, joystickThumb);
+joystickHost.append(joystickBase, joystickHint);
+let joystickPointer = null;
+let joystickCenter = {x: 0, y: 0, radius: 1};
+let compactControls = false;
+let touchWasActive = false;
+let touchLayoutScheduled = false;
+let controlsPaused = true;
+let touchArenaVisible = false;
+
+function resetJoystick() {
+  const pointer = joystickPointer;
+  joystickPointer = null;
+  joystickInput.active = false;
+  joystickInput.x = 0;
+  joystickInput.y = 0;
+  joystickThumb.style.transform = 'translate(-50%, -50%)';
+  joystickBase.classList.remove('engaged');
+  if (pointer !== null && joystickBase.hasPointerCapture?.(pointer)) {
+    try { joystickBase.releasePointerCapture(pointer); } catch (_) {}
+  }
+}
+window.mantisResetJoystick = resetJoystick;
+function joystickUpdate(event) {
+  const dx = event.clientX - joystickCenter.x;
+  const dy = event.clientY - joystickCenter.y;
+  const distance = Math.hypot(dx, dy);
+  const visual = Math.min(joystickCenter.radius, distance);
+  const unitX = distance > 0 ? dx / distance : 0;
+  const unitY = distance > 0 ? dy / distance : 0;
+  const raw = Math.min(1, distance / joystickCenter.radius);
+  const amount = raw <= .13 ? 0 : (raw - .13) / .87;
+  joystickInput.active = true;
+  joystickInput.x = unitX * amount;
+  joystickInput.y = unitY * amount;
+  joystickThumb.style.transform = 'translate(calc(-50% + ' + (unitX * visual).toFixed(2) + 'px), calc(-50% + ' + (unitY * visual).toFixed(2) + 'px))';
+}
+joystickBase.addEventListener('pointerdown', event => {
+  if (joystickPointer !== null || !active || touchUiBlocksMovement()) return;
+  if (event.pointerType === 'mouse' && event.button !== 0) return;
+  event.preventDefault();
+  event.stopPropagation();
+  dragging = false;
+  const bounds = joystickBase.getBoundingClientRect();
+  joystickCenter = {x: bounds.left + bounds.width / 2, y: bounds.top + bounds.height / 2, radius: Math.max(20, bounds.width * .29)};
+  joystickPointer = event.pointerId;
+  joystickBase.setPointerCapture(event.pointerId);
+  joystickBase.classList.add('engaged');
+  joystickUpdate(event);
+}, {passive: false});
+joystickBase.addEventListener('pointermove', event => {
+  if (event.pointerId !== joystickPointer) return;
+  event.preventDefault();
+  event.stopPropagation();
+  if (!active || touchUiBlocksMovement()) { resetJoystick(); return; }
+  joystickUpdate(event);
+}, {passive: false});
+for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+  joystickBase.addEventListener(type, event => {
+    if (event.pointerId !== joystickPointer) return;
+    event.preventDefault();
+    event.stopPropagation();
+    resetJoystick();
+  });
+}
+joystickBase.addEventListener('contextmenu', event => event.preventDefault());
+joystickBase.addEventListener('selectstart', event => event.preventDefault());
+
+const gameTools = document.createElement('div');
+gameTools.id = 'gameTools';
+gameTools.setAttribute('aria-label', 'Game panels');
+const gameMenu = document.createElement('button');
+gameMenu.id = 'gameMenu';
+gameMenu.type = 'button';
+gameMenu.textContent = '☰ Menu';
+gameMenu.setAttribute('aria-controls', 'rightRail');
+gameMenu.setAttribute('aria-expanded', 'false');
+const chatToggle = document.createElement('button');
+chatToggle.id = 'chatToggle';
+chatToggle.type = 'button';
+chatToggle.textContent = '💬 Chat';
+chatToggle.setAttribute('aria-controls', 'chatDock');
+chatToggle.setAttribute('aria-expanded', 'false');
+const mentorButton = $('mentorShow');
+mentorButton.removeAttribute('style');
+gameTools.append(gameMenu, chatToggle, mentorButton);
+document.body.appendChild(gameTools);
+const drawerBackdrop = document.createElement('button');
+drawerBackdrop.id = 'drawerBackdrop';
+drawerBackdrop.type = 'button';
+drawerBackdrop.setAttribute('aria-label', 'Close the open panel');
+document.body.appendChild(drawerBackdrop);
+const railHeader = document.createElement('div');
+railHeader.id = 'railHeader';
+const railTitle = document.createElement('strong');
+railTitle.textContent = 'Your mantis & pets';
+const railClose = document.createElement('button');
+railClose.type = 'button';
+railClose.textContent = 'Close';
+railClose.setAttribute('aria-label', 'Close game menu');
+railHeader.append(railTitle, railClose);
+rightRail.prepend(railHeader, $('objective'));
+const chatHeader = $('chatDock').querySelector('h4');
+const chatClose = document.createElement('button');
+chatClose.id = 'chatClose';
+chatClose.type = 'button';
+chatClose.textContent = 'Close';
+chatClose.setAttribute('aria-label', 'Close world chat');
+chatHeader.appendChild(chatClose);
+
+function stopForPanel() {
+  if (typeof clearMovementInput === 'function') clearMovementInput();
+  else { keys = {}; dragging = false; resetJoystick(); }
+}
+function setGameDrawer(which) {
+  const openMenu = which === 'menu';
+  const openChat = which === 'chat';
+  document.body.classList.toggle('menu-open', openMenu);
+  document.body.classList.toggle('chat-open', openChat);
+  gameMenu.setAttribute('aria-expanded', String(openMenu));
+  chatToggle.setAttribute('aria-expanded', String(openChat));
+  if (!openChat && document.activeElement === $('chatInput')) $('chatInput').blur();
+  if (openMenu || openChat) {
+    $('mentorPanel').style.display = 'none';
+    stopForPanel();
+  }
+  updateTouchControls();
+  scheduleTouchLayout();
+}
+gameMenu.onclick = () => setGameDrawer(document.body.classList.contains('menu-open') ? null : 'menu');
+chatToggle.onclick = () => setGameDrawer(document.body.classList.contains('chat-open') ? null : 'chat');
+railClose.onclick = () => setGameDrawer(null);
+chatClose.onclick = () => setGameDrawer(null);
+drawerBackdrop.onclick = () => setGameDrawer(null);
+mentorButton.addEventListener('click', () => {
+  setGameDrawer(null);
+  stopForPanel();
+  updateTouchControls();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    setGameDrawer(null);
+    if (document.activeElement === $('chatInput')) $('chatInput').blur();
+  }
+});
+function touchPanelVisible(id) {
+  const el = $(id);
+  return !!(el && !el.hidden && getComputedStyle(el).display !== 'none');
+}
+function touchUiBlocksMovement() {
+  const focused = document.activeElement;
+  if (!active || focused?.matches('input,textarea,select,[contenteditable="true"]')) return true;
+  if (compactControls && (document.body.classList.contains('menu-open') || document.body.classList.contains('chat-open'))) return true;
+  return ['onlineSetup', 'petPanel', 'rewardModal', 'mentorPanel'].some(touchPanelVisible);
+}
+function updateTouchControls() {
+  if (touchArenaVisible !== !!currentFight) {
+    touchArenaVisible = !!currentFight;
+    document.body.classList.toggle('in-arena', touchArenaVisible);
+  }
+  if (touchWasActive !== active) {
+    touchWasActive = active;
+    document.body.classList.toggle('is-playing', active);
+    if (!active) {
+      document.body.classList.remove('menu-open', 'chat-open', 'chat-typing');
+      gameMenu.setAttribute('aria-expanded', 'false');
+      chatToggle.setAttribute('aria-expanded', 'false');
+      resetJoystick();
+    }
+    scheduleTouchLayout();
+  }
+  const blocked = touchUiBlocksMovement();
+  if (blocked !== controlsPaused) {
+    controlsPaused = blocked;
+    document.body.classList.toggle('movement-paused', blocked);
+    joystickBase.setAttribute('aria-disabled', String(blocked));
+    if (blocked) stopForPanel();
+  }
+  if (blocked && joystickInput.active) resetJoystick();
+}
+function applyTouchLayout() {
+  touchLayoutScheduled = false;
+  compactControls = touchLayoutQuery.matches || innerWidth <= 740;
+  document.body.classList.toggle('touch-layout', compactControls);
+  document.body.classList.toggle('touch-landscape', compactControls && innerWidth > innerHeight && innerHeight <= 550);
+  // Arena health must stay visible when the compact menu is closed.
+  const battlePanel = $('fight');
+  if (compactControls && battlePanel.parentElement === rightRail) document.body.appendChild(battlePanel);
+  else if (!compactControls && battlePanel.parentElement !== rightRail) rightRail.appendChild(battlePanel);
+  const viewport = window.visualViewport;
+  document.documentElement.style.setProperty('--visible-height', (viewport?.height || innerHeight) + 'px');
+  const hudBottom = $('hud').getBoundingClientRect().bottom;
+  document.documentElement.style.setProperty('--hud-end', Math.ceil(hudBottom + 8) + 'px');
+  const rewards = $('rewardButtons');
+  const rewardBottom = rewards && !rewards.hidden && getComputedStyle(rewards).display !== 'none' ? rewards.getBoundingClientRect().bottom : hudBottom;
+  document.documentElement.style.setProperty('--rewards-end', Math.ceil(rewardBottom + 8) + 'px');
+  document.documentElement.style.setProperty('--tools-end', Math.ceil(gameTools.getBoundingClientRect().bottom + 8) + 'px');
+  updateTouchControls();
+}
+function scheduleTouchLayout() {
+  if (touchLayoutScheduled) return;
+  touchLayoutScheduled = true;
+  requestAnimationFrame(applyTouchLayout);
+}
+window.addEventListener('resize', () => { resetJoystick(); scheduleTouchLayout(); });
+window.addEventListener('orientationchange', () => { resetJoystick(); scheduleTouchLayout(); });
+window.addEventListener('blur', resetJoystick);
+window.addEventListener('pagehide', resetJoystick);
+document.addEventListener('visibilitychange', () => { if (document.hidden) resetJoystick(); });
+window.visualViewport?.addEventListener('resize', scheduleTouchLayout);
+if (touchLayoutQuery.addEventListener) touchLayoutQuery.addEventListener('change', scheduleTouchLayout);
+else touchLayoutQuery.addListener(scheduleTouchLayout);
+document.addEventListener('focusin', event => {
+  if (event.target.matches('input,textarea,select,[contenteditable="true"]')) stopForPanel();
+  document.body.classList.toggle('chat-typing', event.target === $('chatInput'));
+  updateTouchControls();
+});
+document.addEventListener('focusout', () => {
+  setTimeout(() => {
+    document.body.classList.toggle('chat-typing', document.activeElement === $('chatInput'));
+    updateTouchControls();
+    scheduleTouchLayout();
+  }, 0);
+});
+const touchPanelObserver = new MutationObserver(() => { updateTouchControls(); scheduleTouchLayout(); });
+for (const id of ['login', 'mentorPanel', 'petPanel', 'onlineSetup', 'rewardModal']) {
+  if ($(id)) touchPanelObserver.observe($(id), {attributes: true, attributeFilter: ['style', 'hidden', 'class']});
+}
+if (window.ResizeObserver) {
+  const touchLayoutObserver = new ResizeObserver(scheduleTouchLayout);
+  for (const id of ['hud', 'rewardButtons', 'gameTools']) if ($(id)) touchLayoutObserver.observe($(id));
+}
+renderer.domElement.style.touchAction = 'none';
+applyTouchLayout();
+updateTouchControls();
+
+const clock=new T.Clock();function loop(){requestAnimationFrame(loop);const dt=Math.min(.055,clock.getDelta());tick(dt);renderer.render(scene,camera)}$('loading').style.display='none';$('login').style.display='grid';loop();window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});window.addEventListener('beforeunload',save);
+})();</script></body></html>
